@@ -1,0 +1,226 @@
+.homepage-container {
+    display: flex;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    margin: 0; /* Remove margin to prevent spacing */
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #FAF9F6;
+    border-right: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-right: 0;
+    box-sizing: border-box; /* Make sure padding is included in width */
+    font-weight: bolder;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.logo {
+    width: 50px; /* Adjust size as needed */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 10px; /* Space between logo and heading */
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    padding: 13px;
+    margin: 5px 0;
+    cursor: pointer;
+    color: black;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    position: relative;
+}
+
+.sidebar-item:hover, .sidebar-item.active {
+    background-color: #f0f3f7;
+    color: #3498db;
+}
+
+.rotate-icon {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+
+/* Submenu styles */
+.sidebar-submenu {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-item span {
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px; /* Smaller width for mobile */
+    }
+
+    .sidebar-item span, .sidebar-header h3, .sidebar-subitem span {
+        display: none; /* Hide text on small screens */
+    }
+
+    .sidebar-item , .sidebar-subitem  {
+        justify-content: center; /* Center icons */
+    }
+
+    
+    
+    .sidebar-item:hover {
+        background-color: #f0f3f7; /* Background color on hover */
+        color: #3498db; /* Change text color on hover */
+    }
+
+
+    .logo {
+        width: 40px; /* Adjust logo size as needed */
+        height: auto; /* Maintain aspect ratio */
+        
+    }
+}
+
+.sidebar-submenu {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-subitem {
+    display: flex;
+    align-items: center;
+    padding: 9px;
+    cursor: pointer;
+    color: #34495e;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-weight: normal; 
+}
+
+.sidebar-subitem span{
+    margin-left: 10px;
+}
+
+.sidebar-subitem:hover {
+    background-color: #f0f3f7;
+    color: #3498db;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #ecf0f1;
+    overflow-y: auto;
+    margin-left: 0; /* Remove any margin */
+    padding-top: 80px; /* Ensure no padding at the top that might push it down */
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed; /* Make navbar fixed to align with sidebar */
+    top: 0;
+    left: 250px; /* Align navbar perfectly with the sidebar */
+    width: calc(100% - 250px); /* Adjust width to fit remaining space */
+    height: 70px;
+    background-color:#FAF9F6;
+    padding: 10px 20px;
+    color: black;
+    z-index: 1000; /* Ensure navbar is above other content */
+    box-sizing: border-box;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-item {
+    margin: 0 15px; /* Space between items */
+    cursor: pointer;
+    color: #2c3e50; /* Text color */
+}
+
+.navbar-item:hover {
+    color: #3498db; /* Color on hover */
+}
+
+.timezone {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.refresh-icon {
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.session-details {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #2c3e50; /* Text color */
+}
+
+
+.dropdown-menu {
+    position: absolute;
+    right: 10px;
+    top: 50px;
+    background-color: #ffffff;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    width: 160px;
+    color: #85847f;
+}
+
+.dropdown-item {
+    font-weight: lighter;
+    padding: 7px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f3f7;
+}
+
+.dropdown-separator {
+    height: 1px; /* Height of the separator line */
+    background-color: #85847f; /* Color of the separator line */
+    margin: 5px 0; /* Margin to create space above and below the line */
+}
+
+.vendor-dropdown {
+    margin-left: 10px;
+    padding: 5px 10px;
+  }
+  

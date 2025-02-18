@@ -1,0 +1,273 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.dashboard-container.modal-open {
+    pointer-events: none; /* Prevent interactions with the underlying content */
+}
+
+.dashboard-container.modal-open .task-container,
+.dashboard-container.modal-open .chart-container,
+.dashboard-container.modal-open .task-and-create-container {
+    display: none; /* Hide other content when modal is open */
+}
+
+.chart-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.pie-chart {
+    width: 30%;
+    height: 500px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.pie-chart canvas {
+    transform: scale(0.8); /* Scale down the canvas (80% of original size) */
+    transform-origin: center; /* Ensure scaling is centered */
+}
+
+.employee-list {
+    width: 65%;
+    height: 500px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.task-and-create-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.assigned-tasks-container, .create-task-container, .task-container {
+    flex: 1;
+    margin-right: 10px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.create-task-container {
+    margin-right: 0;
+}
+
+.assigned-task-table, .create-task-table, .employee-table, .task-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.assigned-task-table th, .assigned-task-table td,
+.create-task-table th, .create-task-table td,
+.employee-table th, .employee-table td,
+.task-table th, .task-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.assigned-task-table th, .create-task-table th, .employee-table th, .task-table th {
+    background-color: #f2f2f2;
+}
+
+.assigned-task-table tr:hover, .create-task-table tr:hover, .task-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Style for the button container to align items */
+.create-task-buttons {
+    display: flex; /* Use flexbox for layout */
+    justify-content: flex-end; /* Align buttons to the right */
+    margin-bottom: 10px; /* Space between buttons and table */
+}
+
+.create-task-buttons button {
+    margin-left: 10px; /* Space between buttons */
+    padding: 8px 16px; /* Padding for button size */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    background-color: #007BFF; /* Blue background color */
+    color: white; /* White text color */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+}
+
+/* Hover effect for buttons */
+.create-task-buttons button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Additional styles for other button states */
+.create-task-buttons button:focus {
+    outline: none; /* Remove default focus outline */
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); /* Add focus shadow */
+}
+
+/* Optional: Add different colors for specific buttons if desired */
+.create-task-buttons button:nth-child(2) { /* Edit button */
+    background-color: #ffc107; /* Yellow background for Edit */
+    color: black; /* Black text color for visibility */
+}
+
+.create-task-buttons button:nth-child(2):hover { /* Edit button hover */
+    background-color: #e0a800; /* Darker yellow on hover */
+}
+
+.create-task-buttons button:nth-child(3) { /* Delete button */
+    background-color: #dc3545; /* Red background for Delete */
+}
+
+.create-task-buttons button:nth-child(3):hover { /* Delete button hover */
+    background-color: #c82333; /* Darker red on hover */
+}
+
+
+.assigned-task-table td button, .create-task-container button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.completed {
+    background-color: green;
+    color: white;
+}
+
+.pending {
+    background-color: orange;
+    color: white;
+}
+
+/* Optional: add a hover effect for the buttons */
+.completed:hover, .pending:hover {
+    opacity: 0.9;
+}
+
+
+/* Assigned Task */
+.task-container {
+    margin-bottom: 20px;
+    background-color: white; /* Background color for the task container */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Padding inside the container */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+}
+
+.task-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.task-table th, .task-table td {
+    padding: 12px; /* Increased padding for a more spacious look */
+    border: 1px solid #ddd; /* Light border for separation */
+    text-align: left; /* Left align text */
+    transition: background-color 0.3s; /* Transition for hover effect */
+}
+
+.task-table th {
+    background-color: #f5f5f5; /* Light gray background for header */
+    font-weight: bold; /* Bold header text */
+    border-bottom: 2px solid #ddd; /* Darker bottom border for emphasis */
+}
+
+.task-table tr:hover {
+    background-color: #f1f1f1; /* Light hover effect for rows */
+}
+
+.task-table td button {
+    padding: 5px 10px; /* Button padding */
+    border: none; /* Remove default button border */
+    border-radius: 4px; /* Rounded button corners */
+    cursor: pointer; /* Pointer cursor for button */
+}
+
+.completed {
+    background-color: green; /* Green for completed */
+    color: white; /* White text */
+}
+
+.pending {
+    background-color: orange; /* Orange for pending */
+    color: white; /* White text */
+}
+
+/* Optional: add a hover effect for the buttons */
+.completed:hover, .pending:hover {
+    opacity: 0.9; /* Slightly transparent on hover */
+}
+
+/* Modal styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    position: relative;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  
+  form label {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  form input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  form button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  form button:hover {
+    background-color: #0056b3;
+  }
+  

@@ -1,0 +1,112 @@
+/* Main container for the form */
+.registration-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100vh;
+
+  }
+  
+  /* Form styling */
+  .registration-form {
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    max-width: 900px;
+    margin-top: 30px;
+  }
+  
+  /* Form heading */
+  .heading {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Input group styling */
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+  /* Input and label styling */
+  .input-group label {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 8px;
+  }
+  
+  /* Styling for inputs and selects */
+  .input-group input,
+  .input-group select,
+  .phone-input input {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    color: #333;
+    background-color: #fafafa;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  /* Focus styling */
+  .input-group input:focus,
+  .input-group select:focus,
+  .phone-input input:focus {
+    border-color: #4a90e2;
+    outline: none;
+  }
+  
+  /* Phone input full width */
+  .phone-input input {
+    width: 100%;
+    padding-left: 45px; /* To make space for the flag */
+  }
+  
+  /* Submit button styling */
+  .submit-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  button {
+    padding: 12px 25px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    width: 50%;
+    max-width: 200px;
+  }
+  
+  button:hover {
+    background-color: #357abd;
+  }
+  
+  /* Success message styling */
+  .success-message {
+    text-align: center;
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    width: 100%;
+    max-width: 600px;
+  }
+  

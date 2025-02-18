@@ -1,0 +1,170 @@
+.representative-table {
+  width: 100%;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+.representative-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.representative-table th,
+.representative-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.representative-table th {
+  background-color:#28a745;
+  color: white;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+}
+
+.representative-table th input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.representative-table th input:focus {
+  border-color: #007BFF;
+  background-color: #f0f9ff;
+  outline: none;
+}
+
+.representative-update-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.representative-update-button:hover {
+  background-color: #218838;
+}
+
+.representative-error-message,
+.representative-success-message,
+.representative-failure-message {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.representative-error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.representative-success-message {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.representative-failure-message {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.representative-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.representative-modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  width: 500px;
+  max-width: 90%;
+  height: 400px;
+}
+
+.representative-modal-content h3 {
+  margin-top: 0;
+  font-size: 24px;
+  text-align: center;
+}
+
+.representative-modal-form .form-group {
+  margin-bottom: 15px;
+}
+
+.representative-modal-form .form-group label {
+  display: block;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.representative-modal-form .form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 30px;
+}
+
+.representative-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 200px;
+}
+
+.representative-cancel-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.representative-cancel-button:hover {
+  background-color: #c82333;
+}
+
+.representative-save-button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.representative-save-button:hover {
+  background-color: #0056b3;
+}

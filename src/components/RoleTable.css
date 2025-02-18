@@ -1,0 +1,179 @@
+.Role-table {
+    width: 100%;
+    padding: 10px;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+  }
+  
+  .Role-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .Role-table th,
+  .Role-table td {
+    padding: 12px 15px;
+    text-align: left;
+    font-size: 14px;
+  }
+  
+  .Role-table th {
+    background-color:#28a745;
+    color: white;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.03em;
+  }
+  
+  .Role-table th input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  
+  .Role-table th input:focus {
+    border-color: #007BFF;
+    background-color: #f0f9ff;
+    outline: none;
+  }
+  
+
+   /* Target the Action column in the table */
+th.action-column,
+td.action-column {
+  width: 100px; /* Set a specific width for the Action column */
+  text-align: center; /* Align the icons to the center */
+}
+th.description-column,
+td.description-column {
+  width: 700px; /* Set a specific width for the Action column */
+}
+
+/* Optional: Adjust icon size for better appearance */
+.Role-edit-icon,
+.Role-delete-icon {
+  font-size: 18px; /* Reduce icon size */
+  margin: 0 8px; /* Space between icons */
+  cursor: pointer;
+}
+
+.Role-edit-icon:hover,
+.Role-delete-icon:hover {
+  color: #007bff; /* Change color on hover */
+}
+
+  
+  .Role-error-message,
+  .Role-success-message,
+  .Role-failure-message {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+  }
+  
+  .Role-error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .Role-success-message {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .Department-failure-message {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .role-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .role-modal-content {
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    max-width: 90%;
+    height: 30px;
+  }
+
+
+  .role-modal-content h3 {
+    margin-top: 0;
+    font-size: 24px;
+    text-align: center;
+  }
+  
+  .role-modal-form .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .role-modal-form .form-group label {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 14px;
+  }
+  
+  .role-modal-form .form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    height: 30px;
+  }
+  
+  .role-modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 300px;
+  }
+  
+  .role-cancel-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+  
+  .role-cancel-button:hover {
+    background-color: #c82333;
+  }
+  
+  .role-save-button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+  
+  .role-save-button:hover {
+    background-color: #0056b3;
+  }
+  

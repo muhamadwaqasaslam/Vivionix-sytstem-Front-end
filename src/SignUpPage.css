@@ -1,0 +1,31 @@
+.left-label {
+  transform: translate(0, 10px) scale(1);
+  text-align: left;
+}
+
+.password-requirements {
+  list-style-type: disc;
+  padding-left: 5px;
+}
+
+.requirement {
+  display: flex;
+  align-items: center; /* Center items vertically */
+  margin-bottom: 8px; /* Space between each requirement */
+}
+
+
+.sign-up-btn{
+  height: 45px;
+  width: 100%; /* Makes button span the container */
+  text-align: center;
+  display: flex; /* Ensures proper centering */
+  justify-content: center;
+  align-items: center; /* Centers content vertically */
+  padding: 0 16px;
+  box-sizing: border-box; /* Includes padding within the width */
+  max-width: 900px; /* Optional: Set a max-width if needed */
+}
+
+
+

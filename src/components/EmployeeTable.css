@@ -1,0 +1,164 @@
+body {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .employee-table {
+    max-width: 100%;
+  
+    text-align: center;
+    padding: 10px;
+  }
+  
+  .employee-table table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    border-radius: 20px;
+  }
+  
+  .employee-table table th, table td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: center;
+    font-size: 14px;
+  }
+  
+  .employee-table table th {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 14px;
+  }
+
+  
+  .employee-table table th input{
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  
+  .employee-table table th input:focus{
+    border-color: #007BFF;
+    background-color: #f0f9ff;
+    outline: none;
+  }
+  
+  .update-button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .update-button:hover {
+    background-color: #218838;
+  }
+  
+  /* Modal Background */
+  .employee-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);  /* Dimmed background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure modal is above other content */
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  /* Modal Content */
+  .employee-modal-content {
+
+    background-color: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    width: 800px;
+    max-width: 90%;
+    height: 700px;  /* Adjust height if necessary */
+    display: block;
+    position: relative;
+    overflow-x: auto;
+  }
+  
+  /* Modal Title */
+  .employee-modal-content h3 {
+    margin-top: 0;
+    font-size: 24px;
+    text-align: center;
+  }
+  
+  /* Form Styles */
+  .form-group {
+    display: flex;
+    flex-direction: column; /* Stack label and input vertically */
+    margin-bottom: 15px;
+  
+  }
+  
+  .form-group label {
+    margin-bottom: 5px;
+    font-size: 14px;
+    text-align: left; /* Align label to the left */
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .form-group textarea {
+    height: 80px;
+  }
+  
+  /* Buttons */
+  .modal-button,
+  .modal-close-button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    margin-right: 10px; /* Add space between buttons */
+  }
+  
+  .modal-button:hover,
+  .modal-close-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .modal-close-button {
+    background-color: #dc3545;
+  }
+  
+  .modal-close-button:hover {
+    background-color: #c82333;
+  }
+  
+  /* To ensure the buttons are aligned side by side with a gap */
+  .modal-button-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 400px;
+  }
+  
+  
