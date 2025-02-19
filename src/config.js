@@ -1,1 +1,1 @@
-export const BASE_URL = "http://192.168.46.195:8000/";
+export const BASE_URL = "https://my.vivionix.com";
