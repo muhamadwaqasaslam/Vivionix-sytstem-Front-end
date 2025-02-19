@@ -1,1 +1,1 @@
-export const BASE_URL = "https://my.vivionix.com";
+export const BASE_URL = "https://my.vivionix.com/";
