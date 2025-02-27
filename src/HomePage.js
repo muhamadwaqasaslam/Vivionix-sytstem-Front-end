@@ -3,12 +3,6 @@ import {
   FaHome,
   FaTachometerAlt,
   FaBox,
-  FaCalendarAlt,
-  FaHistory,
-  FaDollarSign,
-  FaEnvelope,
-  FaBell,
-  FaCog,
   FaUserTie,
   FaCaretDown,
   FaUserCircle,
@@ -39,7 +33,6 @@ import Completed from "./components/Completed";
 import AddUser from "./components/AddUser";
 import CompanyRegistration from "./components/CompanyRegistration";
 import Settings from "./components/Settings";
-import ToDoList from "./components/todolist";
 import EmployeeRegistration from "./components/EmployeeRegistration";
 import EmployeeTable from "./components/EmployeeTable";
 import VendorRegistration from "./components/VendorRegistration";
@@ -171,7 +164,7 @@ const HomePage = () => {
       case "Home":
         return <Home />;
       default:
-        return <ToDoList />;
+        return <Dashboard />;
     }
   };
 
@@ -345,14 +338,7 @@ const HomePage = () => {
             </div>
           )}
 
-          {/* Other Sidebar Items */}
-          <div
-            className="sidebar-item"
-            onClick={() => setSelectedItem("Schedules")}
-          >
-            <FaCalendarAlt size={14} />
-            {!isSidebarCollapsed && <span className="items">Schedules</span>}
-          </div>
+          
 
           {/* Vendor Dropdown */}
           <div
@@ -535,37 +521,7 @@ const HomePage = () => {
             </div>
           )}
 
-          <div
-            className="sidebar-item"
-            onClick={() => setSelectedItem("Sales")}
-          >
-            <FaDollarSign size={14} /> {!isSidebarCollapsed && <span className="items">Sales</span>}
-          </div>
-
-          <div
-            className="sidebar-item"
-            onClick={() => setSelectedItem("Notifications")}
-          >
-            <FaBell size={14} />  {!isSidebarCollapsed &&  <span className="items">Notifications</span>}
-          </div>
-          <div
-            className="sidebar-item"
-            onClick={() => setSelectedItem("Messages")}
-          >
-            <FaEnvelope size={14} />  {!isSidebarCollapsed &&  <span className="items">Messages</span>}
-          </div>
-          <div
-            className="sidebar-item"
-            onClick={() => setSelectedItem("History")}
-          >
-            <FaHistory size={14} />  {!isSidebarCollapsed &&  <span className="items">History</span>}
-          </div>
-          <div
-            className="sidebar-item"
-            onClick={() => setSelectedItem("Settings")}
-          >
-            <FaCog size={14} /> {!isSidebarCollapsed &&  <span className="items">Settings</span>}
-          </div>
+         
         </div>
       </div>
 

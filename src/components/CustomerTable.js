@@ -1,384 +1,238 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import "./CustomerTable.css";
-import { BASE_URL } from "../config";
 
 const CustomerTable = () => {
-  const [customers, setCustomers] = useState([]);
-  const [error, setError] = useState("");
+  const [customers, setCustomers] = useState([
+    { customerid:"C001",
+      id: "CRF123",
+      registrationDate: "2024-01-15",
+      name: "John Doe",
+      address: "123 Main Street, NY",
+      city: "New York",
+      contactNo: "+1 234 567 890",
+      category: "Retail",
+      type: "Individual",
+      representative: {
+        name: "Jane Doe",
+        designation: "Account Manager",
+        email: "janedoe@example.com",
+        officePhone: "+1 987 654 321",
+        personalPhone: "+1 543 210 987",
+        address: "456 Business Ave, NY",
+      },
+    },
+  ]);
+
+  const [search, setSearch] = useState("");
   const [selectedCustomer, setSelectedCustomer] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [failureMessage, setFailureMessage] = useState("");
-  const [search, setSearch] = useState({
-    Customer_id: "",
-    Companyname: "",
-    Companyemail: "",
-    Company_phone_number: "",
-    address: "",
-    category_name: "",
-    registered_by: "",
-    products: "",
-  });
+  const [modalType, setModalType] = useState(null);
 
-  useEffect(() => {
-    const fetchCustomers = async () => {
-      try {
-        const response = await axios.get(
-          `${BASE_URL}customers/customer/list_all/`,
-          {
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (response.data) {
-          setCustomers(response.data);
-        }
-      } catch (err) {
-        setError("Failed to fetch customer data. Please try again.");
-        console.error(err);
-      }
-    };
-
-    fetchCustomers();
-  }, []);
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value.toLowerCase());
+  };
 
   const filteredCustomers = customers.filter((customer) => {
     return (
-      (search.Customer_id === "" ||
-        (customer.Customer_id &&
-          customer.Customer_id.toString().toLowerCase().includes(search.Customer_id.toLowerCase()))) &&
-      (search.Companyname === "" ||
-        (customer.Companyname &&
-          customer.Companyname.toLowerCase().includes(search.Companyname.toLowerCase()))) &&
-      (search.Companyemail === "" ||
-        (customer.Companyemail &&
-          customer.Companyemail.toLowerCase().includes(search.Companyemail.toLowerCase()))) &&
-      (search.Company_phone_number === "" ||
-        (customer.Company_phone_number &&
-          customer.Company_phone_number.toString().toLowerCase().includes(search.Company_phone_number.toLowerCase()))) &&
-      (search.address === "" ||
-        (customer.address &&
-          customer.address.toLowerCase().includes(search.address.toLowerCase()))) &&
-      (search.category_name === "" ||
-        (customer.category_name &&
-          customer.category_name.toLowerCase().includes(search.category_name.toLowerCase()))) &&
-      (search.registered_by === "" ||
-        (customer.registered_by &&
-          customer.registered_by.toLowerCase().includes(search.registered_by.toLowerCase())))
+      Object.values(customer).some(value =>
+        typeof value === "string" && value.toLowerCase().includes(search)
+      ) ||
+      Object.values(customer.representative).some(value =>
+        typeof value === "string" && value.toLowerCase().includes(search)
+      )
     );
   });
-  
-  const handleUpdateClick = (customer) => {
-    setSelectedCustomer(customer);
-    setIsModalOpen(true);
+
+  const openModal = (customer, type) => {
+    setSelectedCustomer({ ...customer });
+    setModalType(type);
   };
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
+  const closeModal = () => {
     setSelectedCustomer(null);
-    setSuccessMessage("");
-    setFailureMessage("");
+    setModalType(null);
   };
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      const requestUrl = `${BASE_URL}customers/customer/update/${selectedCustomer.Customer_id}`;
-
-      const updatedCustomerData = {
-        registered_by: selectedCustomer.registered_by || null,
-        Companyname: selectedCustomer.Companyname,
-        Companyemail: selectedCustomer.Companyemail,
-        Company_phone_number: selectedCustomer.Company_phone_number,
-        address: selectedCustomer.address,
-        category_name: selectedCustomer.category_name || "",
-      };
-
-      const response = await axios.put(requestUrl, updatedCustomerData, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.status === 200) {
-        setCustomers((prevCustomers) =>
-          prevCustomers.map((customer) =>
-            customer.Customer_id === selectedCustomer.Customer_id
-              ? { ...customer, ...updatedCustomerData }
-              : customer
-          )
-        );
-        setSuccessMessage("Customer updated successfully!");
-        setTimeout(() => {
-          setSuccessMessage("");
-        }, 2000);
-        setIsModalOpen(false);
-      } else {
-        setFailureMessage("Failed to update customer.");
-        setTimeout(() => {
-          setFailureMessage("");
-        }, 2000);
-      }
-    } catch (err) {
-      console.error(
-        "Error during the update:",
-        err.response ? err.response.data : err.message
-      );
-      setFailureMessage("Failed to update customer. Please try again.");
-      setTimeout(() => {
-        setFailureMessage("");
-      }, 2000);
-    }
+  const handleCustomerChange = (e) => {
+    const { name, value } = e.target;
+    setSelectedCustomer((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleInputChange = (field, value) => {
-    setSelectedCustomer({ ...selectedCustomer, [field]: value });
+  const updateCustomer = () => {
+    setCustomers((prev) =>
+      prev.map((customer) =>
+        customer.id === selectedCustomer.id ? selectedCustomer : customer
+      )
+    );
+    closeModal();
   };
 
   return (
-    <div className="customer-table">
-      <h2>Customer List</h2>
-
-      {error && <div className="error-message">{error}</div>}
-      {successMessage && (
-        <div className="success-message">{successMessage}</div>
-      )}
-      {failureMessage && (
-        <div className="failure-message">{failureMessage}</div>
-      )}
-
-      <table>
+    <div className="customer-container">
+      <h2 className="customer-title">Registered Customer List</h2>
+      <table className="customer-table">
         <thead>
           <tr>
+            <th>Customer Register By</th>
+            <th>Date of Registration</th>
             <th>Customer ID</th>
             <th>Customer Name</th>
-            <th>Customer Email</th>
-            <th>Customer Phone Number</th>
             <th>Address</th>
+            <th>City</th>
+            <th>Contact No</th>
             <th>Category</th>
-            <th>Registered By</th>
-            <th>Product List</th>
-            <th>Action</th>
-          </tr>
-          <tr>
-            <th>
-              <input
-                type="text"
-                placeholder="Search by ID"
-                value={search.Customer_id}
-                onChange={(e) => setSearch({ ...search, Customer_id: e.target.value })}
-              />
-            </th>
-            <th>
-              <input
-                type="text"
-                placeholder="Search by Company Name"
-                value={search.Companyname}
-                onChange={(e) => setSearch({ ...search, Companyname: e.target.value })}
-              />
-            </th>
-            <th>
-              <input
-                type="text"
-                placeholder="Search by Email"
-                value={search.Companyemail}
-                onChange={(e) =>
-                  setSearch({ ...search, Companyemail: e.target.value })
-                }
-              />
-            </th>
-            <th>
-              <input
-                type="text"
-                placeholder="Search by Phone Number"
-                value={search.Company_phone_number}
-                onChange={(e) =>
-                  setSearch({ ...search, Company_phone_number: e.target.value })
-                }
-              />
-            </th>
-            <th>
-              <input
-                type="text"
-                placeholder="Search by Address"
-                value={search.address}
-                onChange={(e) =>
-                  setSearch({ ...search, address: e.target.value })
-                }
-              />
-            </th>
-            <th>
-              <input
-                type="text"
-                placeholder="Search by Category"
-                value={search.category_name}
-                onChange={(e) =>
-                  setSearch({ ...search, category_name: e.target.value })
-                }
-              />
-            </th>
-            <th>
-              <input
-                type="text"
-                placeholder="Search by Registered By"
-                value={search.registered_by}
-                onChange={(e) =>
-                  setSearch({ ...search, registered_by: e.target.value })
-                }
-              />
-            </th>
-            <th>
-              <input
-                type="text"
-                placeholder="Search by Product Name"
-                value={search.products}
-                onChange={(e) =>
-                  setSearch({ ...search, products: e.target.value })
-                }
-              />
-            </th>
-            <th></th>
+            <th>Type</th>
+            <th>Representative</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {filteredCustomers.length > 0 ? (
-            filteredCustomers.map((customer) => (
-              <tr key={customer.Customer_id}>
-                <td>{customer.Customer_id}</td>
-                <td>{customer.Companyname}</td>
-                <td>{customer.Companyemail}</td>
-                <td>{customer.Company_phone_number}</td>
-                <td>{customer.address}</td>
-                <td>{customer.category_name || "N/A"}</td>
-                <td>{customer.registered_by}</td>
-                <td>
-                  {customer.products && customer.products.length > 0 ? (
-                    customer.products.map((product, index) => (
-                      <div key={index} className="product-item">
-                        <strong>Product Name:</strong> {product.product_name}{" "}
-                        <br />
-                        <strong>Price:</strong> ${product.productprice}
-                      </div>
-                    ))
-                  ) : (
-                    <span>No products listed</span>
-                  )}
-                </td>
-
-                <td>
-                  <button
-                    onClick={() => handleUpdateClick(customer)}
-                    className="update-button"
-                  >
-                    Update
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="9">No customers available</td>
+          {filteredCustomers.map((customer) => (
+            <tr key={customer.id}>
+              <td>{customer.id}</td>
+              <td>{customer.registrationDate}</td>
+              <td>{customer.customerid}</td>
+              <td>{customer.name}</td>
+              <td>{customer.address}</td>
+              <td>{customer.city}</td>
+              <td>{customer.contactNo}</td>
+              <td>{customer.category}</td>
+              <td>{customer.type}</td>
+              <td>
+                <a href="#" onClick={() => openModal(customer, "representative")}>
+                  {customer.representative.name}
+                </a>
+              </td>
+              <td className="customer-row-button">
+                <button className="btn-view" >View History</button>
+                <button className="btn-update" onClick={() => openModal(customer, "update")}>Update Vendor</button>
+              </td>
             </tr>
-          )}
+          ))}
         </tbody>
       </table>
 
-      {isModalOpen && selectedCustomer && (
-        <div className="customer-modal">
-          <div className="customer-modal-content">
+      {selectedCustomer && modalType === "update" && (
+        <div className="modal-update-customer">
+          <div className="modal-content-update-customer">
+            <span className="close" onClick={closeModal}>&times;</span>
             <h3>Update Customer</h3>
-            <hr />
-            <form onSubmit={handleFormSubmit} className="customer-modal-form">
-              <div className="form-group">
-                <label>Customer Name:</label>
+            <form className="customer-form">
+            
+            <label>
+            Customer Register By:
                 <input
                   type="text"
-                  value={selectedCustomer.Companyname}
-                  onChange={(e) =>
-                    handleInputChange("Companyname", e.target.value)
-                  }
+                  name="name"
+                  value={selectedCustomer.registerby}
+                  onChange={handleCustomerChange}
                 />
-              </div>
-              <div className="form-group">
-                <label>Customer Email:</label>
-                <input
-                  type="email"
-                  value={selectedCustomer.Companyemail}
-                  onChange={(e) =>
-                    handleInputChange("Companyemail", e.target.value)
-                  }
-                />
-              </div>
-              <div className="form-group">
-                <label>Customer Phone:</label>
+              </label>
+             
+              <label>
+              Date of Registration:
                 <input
                   type="text"
-                  value={selectedCustomer.Company_phone_number}
-                  onChange={(e) =>
-                    handleInputChange("Company_phone_number", e.target.value)
-                  }
+                  name="name"
+                  value={selectedCustomer.registrationDate}
+                  onChange={handleCustomerChange}
                 />
-              </div>
-              <div className="form-group">
-                <label>Address:</label>
+              </label>
+              <label>
+                Customer Name:
                 <input
                   type="text"
+                  name="name"
+                  value={selectedCustomer.name}
+                  onChange={handleCustomerChange}
+                />
+              </label>
+              <label>
+                Address:
+                <input
+                  type="text"
+                  name="address"
                   value={selectedCustomer.address}
-                  onChange={(e) => handleInputChange("address", e.target.value)}
+                  onChange={handleCustomerChange}
                 />
-              </div>
-              <div className="form-group">
-                <label>Category :</label>
+              </label>
+              <label>
+                City:
                 <input
                   type="text"
-                  value={selectedCustomer.category_name}
-                  onChange={(e) => handleInputChange("category_name", e.target.value)}
+                  name="city"
+                  value={selectedCustomer.city}
+                  onChange={handleCustomerChange}
                 />
-              </div>
-              <div className="form-group">
-                <label>Registered By:</label>
+              </label>
+              <label>
+                Contact No:
                 <input
                   type="text"
-                  value={selectedCustomer.registered_by}
-                  onChange={(e) =>
-                    handleInputChange("registered_by", e.target.value)
-                  }
+                  name="contactNo"
+                  value={selectedCustomer.contactNo}
+                  onChange={handleCustomerChange}
                 />
-              </div>
-              <div className="form-group">
-                <label>Products :</label>
-                <textarea
-                  value={
-                    selectedCustomer.products
-                      ? selectedCustomer.products
-                          .map(
-                            (product) =>
-                              `${product.product_name} - $${product.productprice}`
-                          )
-                          .join("\n")
-                      : "No products listed"
-                  }
-                  readOnly
+              </label>
+              <label>
+                Category:
+                <input
+                  type="text"
+                  name="contactNo"
+                  value={selectedCustomer.category}
+                  onChange={handleCustomerChange}
                 />
-              </div>
-              <div className="customer-modal-buttons">
-                <button
-                  type="button"
-                  onClick={handleModalClose}
-                  className="customer-cancel-button"
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="customer-save-button">
-                  Save
-                </button>
-              </div>
+              </label>
+              <label>
+                Type:
+                <input
+                  type="text"
+                  name="contactNo"
+                  value={selectedCustomer.type}
+                  onChange={handleCustomerChange}
+                />
+              </label>
+              <button
+                type="button"
+                className="btn-save"
+                onClick={updateCustomer}
+              >
+                Save Changes
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {selectedCustomer && modalType === "representative" && (
+        <div className="modal-representative">
+          <div className="modal-content-representative">
+            <span className="close" onClick={closeModal}>&times;</span>
+            <h3>Representative Details</h3>
+            <form>
+              <label>
+                Name:
+                <input type="text" value={selectedCustomer.representative.name} disabled />
+              </label>
+              <label>
+                Designation:
+                <input type="text" value={selectedCustomer.representative.designation} disabled />
+              </label>
+              <label>
+                Email:
+                <input type="text" value={selectedCustomer.representative.email} disabled />
+              </label>
+              <label>
+                Office Phone:
+                <input type="text" value={selectedCustomer.representative.officePhone} disabled />
+              </label>
+              <label>
+                Personal Phone:
+                <input type="text" value={selectedCustomer.representative.personalPhone} disabled />
+              </label>
+              <label>
+                Address:
+                <input type="text" value={selectedCustomer.representative.address} disabled />
+              </label>
             </form>
           </div>
         </div>

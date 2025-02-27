@@ -1,124 +1,126 @@
-/* Main container for the form */
-.Customer_form-container {
+/* Main Container */
+.customer-form-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
-/* Main form styling */
-.customer_registration {
-  display: flex;
-  flex-direction: column;
-  margin: 30px;
+  max-width: 97%;
+  margin: 0 auto;
   padding: 40px;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  width: 60%;
-  background-color: #ffffff;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  min-height: 420px;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #f9f9f9;
+  margin-top: 20px;
 }
 
-/* Form heading */
-.heading {
+/* Form Title */
+.customer-form-title {
   text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
   margin-bottom: 20px;
 }
 
-/* Input group styling */
-.input-group {
+/* Form Sections */
+.customer-form-section {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  gap: 15px;
 }
 
-.input-group label {
-  font-size: 16px;
-  color: #555;
-}
-
-/* Submit button styling */
-.submit-container {
+/* Form Groups */
+.customer-form-group {
   display: flex;
-  justify-content: center;
-  margin-top: 25px;
+  flex-direction: column;
 }
 
-button {
-  padding: 12px 20px;
-  background-color: #3498db;
-  color: #fff;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease;
-  width: 20%;
-  margin-top: 10px;
+.customer-form-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
-button:hover {
-  background-color: #357abd;
-}
-
-
-/* Product row styling */
-.product-input-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
-  width: 820px;
-}
-
-/* Product input fields */
-.product-input {
-  flex: 1;
+.customer-form-group input, 
+.customer-form-group select {
+  width: 100%;
   padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Representative Section */
+.representative-title {
+  margin-top: 40px;
+  text-align: left;
+}
+
+/* Table Styling */
+.representative-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.representative-table th{
+  background-color: #007bff;
+}
+
+.representative-table tr{
+    background-color: #f9f9f9;
+}
+
+.representative-table th, 
+.representative-table td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: center; /* Ensures headers are centered */
+  vertical-align: middle; /* Aligns content vertically */
+}
+
+/* Centering Inputs Properly */
+.representative-table td {
+ 
+  justify-content: center;  /* Horizontally center input fields */
+  align-items: center;      /* Vertically center input fields */
+  height: 50px;             /* Adjust height as needed */
+}
+
+/* Table Input Fields */
+.representative-table td input, 
+.representative-table td select {
+  width: 90%;              /* Ensures input takes most of the column width */
+  padding: 7px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
-  background-color: rgb(250, 250, 250);
+  background: #fff;
+  transition: 0.3s;
+  text-align: center; /* Centers text inside input fields */
 }
 
-/* Add product button */
-.products-section .add-product-button {
-  color: #3498db; /* Match your main theme color or another accent color */
-  background-color: transparent; /* Removes background */
-  border: none; /* Removes any border */
-  cursor: pointer;
-  font-size: 16px;
+/* Fix for File Input */
+.representative-table td input[type="file"] {
+  width: 95%;
+  text-align: center;
+}
+
+/* Action Buttons */
+.row-icon {
   display: flex;
-  justify-content: right; /* Centers the icon horizontally */
-  align-items: center; /* Centers the icon vertically */
-  padding: 5px; /* Optional: add some padding */
-  transition: color 0.3s ease; /* Adds hover effect */
-  width: 30px;
-}
-
-.products-section .add-product-button:hover {
-  color: #357abd; /* Darken the icon color on hover */
+  justify-content: center; /* Centers buttons */
+  gap: 10px;
 }
 
 
-.products-section .remove-product-button {
-  color: red; /* Icon color */
-  background-color: transparent; /* Removes background */
-  border: none; /* Removes border */
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  justify-content: right;
-  align-items: center;
-  padding: 5px;
-  transition: color 0.3s ease;
-  width: 30px;
+.plus {
+  background-color: #007bff;
+  color: white;
+  width: 50px;
+  border-radius: 3%;
+ 
+}
+.remove {
+  background-color: #007bff;
+  color: white;
+  width: 50px;
+  border-radius: 3%;
 }
 
-.products-section .remove-product-button:hover {
-  color: darkred; /* Darker red on hover */
-}
+

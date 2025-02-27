@@ -34,7 +34,8 @@ const VendorTable = () => {
   ]);
 
   const [search, setSearch] = useState("");
-
+  const [selectedVendor, setSelectedVendor] = useState(null);
+  const [modalType, setModalType] = useState(null);
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value.toLowerCase());
@@ -50,19 +51,15 @@ const VendorTable = () => {
       )
     );
   });
-  
-
-  const [selectedVendor, setSelectedVendor] = useState(null);
-  const [modalType, setModalType] = useState(null);
 
   const openModal = (vendor, type) => {
-    setSelectedVendor({ ...vendor }); // Ensure fresh copy of vendor
+    setSelectedVendor({ ...vendor });
     setModalType(type);
   };
 
   const closeModal = () => {
     setSelectedVendor(null);
-    setModalType("");
+    setModalType(null);
   };
 
   const handleVendorChange = (e) => {
@@ -94,19 +91,8 @@ const VendorTable = () => {
             <th>Representative</th>
             <th>Actions</th>
           </tr>
-          <tr>
-            <th><input type="text" name="id" onChange={handleSearchChange} /></th>
-            <th><input type="text" name="registrationDate" onChange={handleSearchChange} /></th>
-            <th><input type="text" name="name" onChange={handleSearchChange} /></th>
-            <th><input type="text" name="address" onChange={handleSearchChange} /></th>
-            <th><input type="text" name="website" onChange={handleSearchChange} /></th>
-            <th><input type="text" name="type" onChange={handleSearchChange} /></th>
-            <th><input type="text" name="representative" onChange={handleSearchChange} /></th>
-            <th></th>
-          </tr>
         </thead>
         <tbody>
-
           {filteredVendors.map((vendor) => (
             <tr key={vendor.id}>
               <td>{vendor.id}</td>
@@ -114,13 +100,7 @@ const VendorTable = () => {
               <td>{vendor.name}</td>
               <td>{vendor.address}</td>
               <td>
-                <a
-                  href={vendor.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {vendor.website}
-                </a>
+                <a href={vendor.website} target="_blank" rel="noopener noreferrer">{vendor.website}</a>
               </td>
               <td>{vendor.type}</td>
               <td>
@@ -128,37 +108,21 @@ const VendorTable = () => {
                   {vendor.representative.name}
                 </a>
               </td>
-              <td className="action">
-                <button
-                  onClick={() => openModal(vendor, "products")}
-                  className="btn-view"
-                >
-                  View Products
-                </button>
-                <button
-                  onClick={() => openModal(vendor, "update")}
-                  className="btn-update"
-                >
-                  Update Vendor
-                </button>
+              <td className="vendor-row-button">
+                <button className="btn-view" onClick={() => openModal(vendor, "products")}>View Products</button>
+                <button className="btn-update" onClick={() => openModal(vendor, "update")}>Update Vendor</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {/* Single Modal for Update & Product Details */}
-      {selectedVendor && (
-        <div className="modal-vendor">
-          <div className="modal-content-vendor">
-            <span className="close" onClick={closeModal}>
-              &times;
-            </span>
-
-            {modalType === "update" && (
-              <div>
-                <h3>Update Vendor</h3>
-                <form className="vendor-form">
+      {selectedVendor && modalType === "update" && (
+        <div className="modal-update">
+          <div className="modal-content-update">
+            <span className="close" onClick={closeModal}>&times;</span>
+            <h3>Update Vendor</h3>
+            <form className="vendor-form">
                   <label>
                     Vendor Name:
                     <input
@@ -212,13 +176,16 @@ const VendorTable = () => {
                     Save Changes
                   </button>
                 </form>
-              </div>
-            )}
+          </div>
+        </div>
+      )}
 
-            {modalType === "products" && (
-              <div>
-                <h3>Product Details</h3>
-                {selectedVendor.products.map((product, index) => (
+      {selectedVendor && modalType === "products" && (
+        <div className="modal-products">
+          <div className="modal-content-products">
+            <span className="close" onClick={closeModal}>&times;</span>
+            <h3>Product Details</h3>
+            {selectedVendor.products.map((product, index) => (
                   <form key={index} className="product-form">
                     <label>
                       Sr. No.: <input type="text" value={index + 1} disabled />
@@ -273,18 +240,16 @@ const VendorTable = () => {
                   </form>
                 ))}
               </div>
-            )}
-          </div>
+            
+        </div>
+      )}
 
-          {/* Modal for Representative Details */}
-          {selectedVendor && modalType === "representative" && (
-            <div className="modal-representative">
-              <div className="modal-content-representative">
-                <span className="close" onClick={closeModal}>
-                  &times;
-                </span>
-                <h3>Representative Details</h3>
-                <form>
+      {selectedVendor && modalType === "representative" && (
+        <div className="modal-representative">
+          <div className="modal-content-representative">
+            <span className="close" onClick={closeModal}>&times;</span>
+            <h3>Representative Details</h3>
+            <form>
                   <label>
                     Name:
                     <input
@@ -334,9 +299,7 @@ const VendorTable = () => {
                     />
                   </label>
                 </form>
-              </div>
-            </div>
-          )}
+          </div>
         </div>
       )}
     </div>

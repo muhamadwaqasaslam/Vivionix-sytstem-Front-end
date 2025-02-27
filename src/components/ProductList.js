@@ -87,7 +87,7 @@ const ProductTable = () => {
   };
 
   return (
-    <div className="container">
+    <div className="product-container">
       <h1 className="product-heading">Product List</h1>
       <div className="table-container">
         <table className="product-table">

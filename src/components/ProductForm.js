@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './ProductForm.css';  
-import { BASE_URL } from '../config';
 
 const ProductForm = () => {
   const initialProductState = {
@@ -19,8 +18,8 @@ const ProductForm = () => {
 
   const [vendor, setVendor] = useState('');
   const [products, setProducts] = useState([{ ...initialProductState, id: Date.now() }]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleVendorChange = (e) => {
     setVendor(e.target.value);
@@ -45,37 +44,19 @@ const ProductForm = () => {
 
   const handleSave = () => {
     setIsSaved(true);
+    setIsSubmitted(false); // Reset submit state when saving again
+    alert("Vendor details saved successfully!");
   };
-  const handleSubmit = async (e) => {
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    
-    try {
-      const formData = new FormData();
-      formData.append('vendor', vendor);
-      products.forEach((product, index) => {
-        Object.entries(product).forEach(([key, value]) => {
-          if (value) formData.append(`products[${index}][${key}]`, value);
-        });
-      });
-      
-      const response = await fetch(`${BASE_URL}products/register/`, {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to register products');
-      }
-
-      alert('Products registered successfully!');
-      setVendor('');
-      setProducts([{ ...initialProductState, id: Date.now() }]);
-    } catch (error) {
-      alert(error.message);
-    } finally {
-      setIsSubmitting(false);
+    if (!isSaved) {
+      alert("Please save the form before submitting.");
+      return;
     }
+    setIsSubmitted(true);
+    setIsSaved(false); // Disable "Save" again after submission
+    alert("Vendor registration submitted successfully!");
   };
 
   return (
@@ -144,8 +125,12 @@ const ProductForm = () => {
       </div>
 
       <div className="button-container">
-      <button type="button" className="save-btn" onClick={handleSave} disabled={isSaved}>Save</button>
-        <button type="button" onClick={handleSubmit} disabled={isSubmitting}>{isSubmitting ? 'Registering...' : 'Register'}</button>
+        <button type="button" className="vendor-btn save" onClick={handleSave} disabled={isSaved}>
+          Save
+        </button>
+        <button type="submit" className="vendor-btn submit" onClick={handleSubmit} disabled={!isSaved || isSubmitted}>
+          Submit
+        </button>
       </div>
     </div>
   );

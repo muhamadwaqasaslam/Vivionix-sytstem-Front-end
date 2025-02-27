@@ -18,14 +18,14 @@ const VendorForm = () => {
     address: "",
     website: "",
     type: "",
-    productEmail: "",
+    contactEmail: "",
     productNumber: "",
     productCatalog: null,
   });
 
   const [representative, setRepresentative] = useState([initialRepresentativeState]);
   const [isSaved, setIsSaved] = useState(false);
-  const [savedVendor, setSavedVendor] = useState(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleVendorChange = (e) => {
     const { name, value, files } = e.target;
@@ -54,7 +54,7 @@ const VendorForm = () => {
 
   const handleSave = () => {
     setIsSaved(true);
-    setSavedVendor(vendor);
+    setIsSubmitted(false); // Reset submit state when saving again
     alert("Vendor details saved successfully!");
   };
 
@@ -64,12 +64,14 @@ const VendorForm = () => {
       alert("Please save the form before submitting.");
       return;
     }
+    setIsSubmitted(true);
+    setIsSaved(false); // Disable "Save" again after submission
     alert("Vendor registration submitted successfully!");
   };
 
   return (
     <div className="vendor-form-container">
-      <h1 className="vendor-heading">Vendor Registration Form</h1>
+      <h2 className="vendor-heading">Vendor Registration Form</h2>
       <h2>Vendor Information Table</h2>
 
       <div className="table-container">
@@ -80,8 +82,8 @@ const VendorForm = () => {
               <th>Address</th>
               <th>Website</th>
               <th>Type</th>
-              <th>Product Email</th>
-              <th>Product Number</th>
+              <th>Contact Email</th>
+              <th>Contact Number</th>
               <th>Product Catalog</th>
             </tr>
           </thead>
@@ -112,10 +114,10 @@ const VendorForm = () => {
             <tr>
               <th>Name</th>
               <th>Designation</th>
-              <th>Product Email</th>
-              <th>Office Product</th>
-              <th>Personal Product</th>
-              <th>Address</th>
+              <th>Contact Email</th>
+              <th>Contact No (Office)</th>
+              <th>Contact No (Office)</th>
+              <th>Address of Representative</th>
               <th>Visiting Card</th>
               <th>Action</th>
             </tr>
@@ -125,7 +127,7 @@ const VendorForm = () => {
               <tr key={rep.id}>
                 <td><input type="text" name="name" value={rep.name} onChange={(e) => handleRepresentativeChange(rep.id, e)} /></td>
                 <td><input type="text" name="designation" value={rep.designation} onChange={(e) => handleRepresentativeChange(rep.id, e)} /></td>
-                <td><input type="text" name="productEmail" value={rep.productEmail} onChange={(e) => handleRepresentativeChange(rep.id, e)} /></td>
+                <td><input type="text" name="productEmail" value={rep.contactEmail} onChange={(e) => handleRepresentativeChange(rep.id, e)} /></td>
                 <td><input type="text" name="officeproduct" value={rep.officeproduct} onChange={(e) => handleRepresentativeChange(rep.id, e)} /></td>
                 <td><input type="text" name="personalproduct" value={rep.personalproduct} onChange={(e) => handleRepresentativeChange(rep.id, e)} /></td>
                 <td><input type="text" name="address" value={rep.address} onChange={(e) => handleRepresentativeChange(rep.id, e)} /></td>
@@ -143,8 +145,12 @@ const VendorForm = () => {
       </div>
 
       <div className="button-container">
-        <button type="button" className="vendor-btn save" onClick={handleSave}>Save</button>
-        <button type="submit" className="vendor-btn submit" onClick={handleSubmit}>Submit</button>
+        <button type="button" className="vendor-btn save" onClick={handleSave} disabled={isSaved}>
+          Save
+        </button>
+        <button type="submit" className="vendor-btn submit" onClick={handleSubmit} disabled={!isSaved || isSubmitted}>
+          Submit
+        </button>
       </div>
     </div>
   );

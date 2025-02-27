@@ -4,7 +4,7 @@
   max-width: 1400px;
   margin: 20px auto;
   padding: 20px;
-  background: #ffffff;
+  background: #f9f9f9;
   border-radius: 12px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
   overflow-x: auto;
@@ -13,11 +13,9 @@
 /* Heading */
 .vendor-heading {
   text-align: center;
-  font-size: 28px;
-  font-weight: bold;
   color: #333;
   margin-bottom: 20px;
-  text-transform: uppercase;
+
 }
 
 /* Table Styling */
