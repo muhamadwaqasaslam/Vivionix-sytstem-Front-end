@@ -11,21 +11,18 @@ import {
   FaCog,
   FaUserTie,
   FaCaretDown,
-  FaClock,
-  FaSync,
   FaUserCircle,
   FaSignOutAlt,
-  FaUserPlus,
   FaBuilding,
   FaThLarge,
   FaChevronDown,
   FaChevronRight,
   FaUser,
   FaStore,
-  FaList,
-  FaRegAddressBook,
   FaShoppingCart,
 } from "react-icons/fa";
+
+import { AlignLeft, Search } from "lucide-react";
 
 import "./HomePage.css";
 import Home from "./components/Home";
@@ -83,11 +80,26 @@ const HomePage = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const formattedTime = currentTime.toLocaleTimeString();
-  const formattedDate = currentTime.toLocaleDateString();
-
   const toggleUserDropdown = () => {
     setDropdownOpen(!dropdownOpen);
+  };
+
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+
+
+  const toggleSidebar = () => {
+    if (window.innerWidth <= 768) {
+      setIsSidebarVisible((prev) => !prev);
+    } else {
+      setIsSidebarCollapsed((prev) => !prev);
+    }
+  };
+  
+  
+
+  const handleMouseEnter = () => {
+    setIsSidebarCollapsed(false);
   };
 
   const renderContent = () => {
@@ -163,370 +175,420 @@ const HomePage = () => {
     }
   };
 
+  const [searchValue, setSearchValue] = useState("");
+
   return (
-    <div className="homepage-container">
+    <div
+  className={`homepage-container ${isSidebarCollapsed ? "collapsed" : ""} ${
+    isSidebarVisible ? "sidebar-open" : ""
+  }`}
+>
       {/* Sidebar */}
-      <div className="sidebar">
+      <div className={`sidebar ${isSidebarCollapsed ? "collapsed" : ""} ${isSidebarVisible ? "show" : ""}`} onMouseEnter={handleMouseEnter}>
         <div className="sidebar-header">
-          <img src={logo} alt="Logo" className="logo" />
-          <h2>Vivionix</h2>
+          <a href="/home">
+            {" "}
+            <img src={logo} alt="Logo" className="logo" />
+            {!isSidebarCollapsed && <h2>Vivionix</h2>}
+          </a>
         </div>
-        <div className="sidebar-item" onClick={() => setSelectedItem("Home")}>
-          <FaHome /> <span>Home</span>
-        </div>
-        <div
-          className="sidebar-item"
-          onClick={() => setSelectedItem("Dashboard")}
-        >
-          <FaTachometerAlt /> <span>Dashboard</span>
-        </div>
+        <div className="sidebar-content">
+        {!isSidebarCollapsed &&  <h4 className="main-items">MAIN</h4>}
+          <div className="sidebar-item" onClick={() => setSelectedItem("Home")}>
+            <FaHome size={14} />{" "}
+            {!isSidebarCollapsed && <span className="items">Home</span>}
+          </div>
+          <div
+            className="sidebar-item"
+            onClick={() => setSelectedItem("Dashboard")}
+          >
+            <FaTachometerAlt size={14} />{" "}
+            {!isSidebarCollapsed && <span className="items">Dashboard</span>}
+          </div>
 
-        {/* Employee Dropdown */}
-        <div
-          className="sidebar-item"
-          onClick={() => toggleDropdown("Employee")}
-        >
-          {/* Conditionally render the Chevron icon based on the dropdown state */}
-          <FaUser /> <span>Employee</span>
-          <span style={{ marginLeft: "30px" }}></span>
-          {activeDropdown === "Employee" ? (
-            <FaChevronDown />
-          ) : (
-            <FaChevronRight />
+          {!isSidebarCollapsed &&  <h4 className="main-items">GENERAL</h4>}
+
+          {/* Employee Dropdown */}
+          <div
+            className="sidebar-item"
+            onClick={() => toggleDropdown("Employee")}
+          >
+            {/* Conditionally render the Chevron icon based on the dropdown state */}
+            <FaUser size={14} />
+            {!isSidebarCollapsed && <span className="items">Employee</span>}
+            {!isSidebarCollapsed && (
+              <span style={{ marginLeft: "50px" }}>
+                {activeDropdown === "Employee" ? (
+                  <FaChevronDown className="dropdown-icon" />
+                ) : (
+                  <FaChevronRight className="dropdown-icon" />
+                )}
+              </span>
+            )}
+          </div>
+          {activeDropdown === "Employee" && (
+            <div className="sidebar-submenu">
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Employee Registration")}
+              >
+                Employee Registration
+              </div>
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Employee Table")}
+              >
+                Employees List
+              </div>
+            </div>
           )}
-        </div>
-        {activeDropdown === "Employee" && (
-          <div className="sidebar-submenu">
-            <div
-              className="sidebar-subitem"
-              onClick={() => setSelectedItem("Employee Registration")}
-            >
-              <FaUserPlus /> <span>Employee Registration</span>
-            </div>
-            <div
-              className="sidebar-subitem"
-              onClick={() => setSelectedItem("Employee Table")}
-            >
-              <FaList /> <span>Employees List</span>
-            </div>
-          </div>
-        )}
 
-<div
-          className="sidebar-item"
-          onClick={() => toggleDropdown("category")}
-        >
-          <FaThLarge /> <span>Category</span>
-          <span style={{ marginLeft: "45px" }}>
-            {activeDropdown === "category" ? (
-              <FaChevronDown />
-            ) : (
-              <FaChevronRight />
+          {/* Category Dropdown */}
+          <div
+            className="sidebar-item"
+            onClick={() => toggleDropdown("category")}
+          >
+            <FaThLarge className="icon" />{" "}
+            {!isSidebarCollapsed && (
+              <>
+                <span className="items">Category</span>
+                <span style={{ marginLeft: "55px" }}>
+                  {activeDropdown === "category" ? (
+                    <FaChevronDown className="dropdown-icon" />
+                  ) : (
+                    <FaChevronRight className="dropdown-icon" />
+                  )}
+                </span>
+              </>
             )}
-          </span>
-        </div>
-
-        {activeDropdown === "category" && (
-          <div className="sidebar-submenu">
-            <div
-              className="dropdown-item"
-              onClick={() => setSelectedItem("CustomerCategory Form")}
-            >
-              <FaUserPlus style={{ marginRight: "8px" }} />
-              Category Registration
-            </div>
-            <div
-              className="dropdown-item"
-              onClick={() => setSelectedItem("Customer Category Table")}
-            >
-              <FaList style={{ marginRight: "8px" }} />
-              Category List
-            </div>
           </div>
-        )}
 
-
-
-
-        {/* Department Dropdown */}
-
-        <div
-          className="sidebar-item"
-          onClick={() => toggleDropdown("Department")}
-        >
-          <FaBuilding /> <span>Department</span>
-          <span style={{ marginLeft: "18px" }}></span>
-          {activeDropdown === "Department" ? (
-            <FaChevronDown />
-          ) : (
-            <FaChevronRight />
+          {activeDropdown === "category" && (
+            <div className="sidebar-submenu">
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("CustomerCategory Form")}
+              >
+                Category Registration
+              </div>
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Customer Category Table")}
+              >
+                Category List
+              </div>
+            </div>
           )}
-        </div>
-        {activeDropdown === "Department" && (
-          <div className="sidebar-submenu">
-            <div
-              className="sidebar-subitem"
-              onClick={() => setSelectedItem("Department Registration")}
-            >
-              <FaUserPlus /> <span>Department Registration</span>
-            </div>
-            <div
-              className="sidebar-subitem"
-              onClick={() => setSelectedItem("Department Table")}
-            >
-              <FaList /> <span>Department Table</span>
-            </div>
+
+          {/* Department Dropdown */}
+          <div
+            className="sidebar-item"
+            onClick={() => toggleDropdown("Department")}
+          >
+            <FaBuilding size={14} />
+            {!isSidebarCollapsed && <span className="items">Department</span>}
+            {!isSidebarCollapsed && (
+              <span style={{ marginLeft: "45px" }}>
+                {activeDropdown === "Department" ? (
+                  <FaChevronDown className="dropdown-icon" />
+                ) : (
+                  <FaChevronRight className="dropdown-icon" />
+                )}
+              </span>
+            )}
           </div>
-        )}
-
-        {/* Role Dropdown */}
-
-        <div
-          className="sidebar-item"
-          onClick={() => toggleDropdown("Role")}
-        >
-          <FaUserTie /> <span>Role</span>
-          <span style={{ marginLeft: "18px" }}></span>
-          {activeDropdown === "Role" ? (
-            <FaChevronDown />
-          ) : (
-            <FaChevronRight />
+          {!isSidebarCollapsed && activeDropdown === "Department" && (
+            <div className="sidebar-submenu">
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Department Registration")}
+              >
+                Department Registration
+              </div>
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Department Table")}
+              >
+                Department Table
+              </div>
+            </div>
           )}
-        </div>
-        {activeDropdown === "Role" && (
-          <div className="sidebar-submenu">
-            <div
-              className="sidebar-subitem"
-              onClick={() => setSelectedItem("Role Registration")}
-            >
-              <FaUserPlus /> <span>Role Registration</span>
-            </div>
-            <div
-              className="sidebar-subitem"
-              onClick={() => setSelectedItem("Role Table")}
-            >
-              <FaList /> <span>Role Table</span>
-            </div>
-          </div>
-        )}
 
-        {/* Other Sidebar Items */}
-        <div
-          className="sidebar-item"
-          onClick={() => setSelectedItem("Schedules")}
-        >
-          <FaCalendarAlt /> <span>Schedules</span>
-        </div>
-
-        <div className="sidebar-item" onClick={() => toggleDropdown("Vendor")}>
-          <FaStore /> <span>Vendor</span>
-          <span style={{ marginLeft: "45px" }}>
-            {activeDropdown === "Vendor" ? (
-              <FaChevronDown />
-            ) : (
-              <FaChevronRight />
+          {/* Role Dropdown */}
+          <div className="sidebar-item" onClick={() => toggleDropdown("Role")}>
+            <FaUserTie size={14} />
+            {!isSidebarCollapsed && <span className="items">Role</span>}
+            {!isSidebarCollapsed && (
+              <span style={{ marginLeft: "85px" }}>
+                {activeDropdown === "Role" ? (
+                  <FaChevronDown className="dropdown-icon" />
+                ) : (
+                  <FaChevronRight className="dropdown-icon" />
+                )}
+              </span>
             )}
-          </span>
-        </div>
-
-        {/* Vendor Dropdown Menu */}
-        {activeDropdown === "Vendor" && (
-          <div className="vendor-dropdown">
-            <div
-              className="dropdown-item"
-              onClick={() => setSelectedItem("vendor Registration")}
-            >
-              <FaUserPlus style={{ marginRight: "8px" }} />
-              Vendor Registration
-            </div>
-            <div
-              className="dropdown-item"
-              onClick={() => setSelectedItem("Vendor List")}
-            >
-              <FaList style={{ marginRight: "8px" }} />
-              Vendor List
-            </div>
           </div>
-        )}
-        <div
-          className="sidebar-item"
-          onClick={() => toggleDropdown("representative")}
-        >
-          <FaStore /> <span>Representative</span>
-          <span style={{ marginLeft: "45px" }}>
-            {activeDropdown === "representative" ? (
-              <FaChevronDown />
-            ) : (
-              <FaChevronRight />
+          {!isSidebarCollapsed && activeDropdown === "Role" && (
+            <div className="sidebar-submenu">
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Role Registration")}
+              >
+                Role Registration
+              </div>
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Role Table")}
+              >
+                Role Table
+              </div>
+            </div>
+          )}
+
+          {/* Other Sidebar Items */}
+          <div
+            className="sidebar-item"
+            onClick={() => setSelectedItem("Schedules")}
+          >
+            <FaCalendarAlt size={14} />
+            {!isSidebarCollapsed && <span className="items">Schedules</span>}
+          </div>
+
+          {/* Vendor Dropdown */}
+          <div
+            className="sidebar-item"
+            onClick={() => toggleDropdown("Vendor")}
+          >
+            <FaStore size={14} />
+            {!isSidebarCollapsed && <span className="items">Vendor</span>}
+            {!isSidebarCollapsed && (
+              <span style={{ marginLeft: "70px" }}>
+                {activeDropdown === "Vendor" ? (
+                  <FaChevronDown className="dropdown-icon" />
+                ) : (
+                  <FaChevronRight className="dropdown-icon" />
+                )}
+              </span>
             )}
-          </span>
-        </div>
-
-        {activeDropdown === "representative" && (
-          <div className="vendor-dropdown">
-            <div
-              className="dropdown-item"
-              onClick={() => setSelectedItem("Vendor Representative Form")}
-            >
-              <FaUserPlus style={{ marginRight: "8px" }} />
-              Vendor Representative Registration
-            </div>
-            <div
-              className="dropdown-item"
-              onClick={() => setSelectedItem("Vendor Representative List")}
-            >
-              <FaList style={{ marginRight: "8px" }} />
-              Vendor Representative List
-            </div>
-            <div
-              className="dropdown-item"
-              onClick={() => setSelectedItem("Customer Representative Form")}
-            >
-              <FaUserPlus style={{ marginRight: "8px" }} />
-              Customer Representative Registration
-            </div>
           </div>
-        )}
+          {!isSidebarCollapsed && activeDropdown === "Vendor" && (
+            <div className="sidebar-submenu">
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("vendor Registration")}
+              >
+                Vendor Registration
+              </div>
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Vendor List")}
+              >
+                Vendor List
+              </div>
+            </div>
+          )}
 
-        <div
-          className="sidebar-item"
-          onClick={() => toggleDropdown("customer")}
-        >
-          <FaUser /> <span>Customer</span>
-          <span style={{ marginLeft: "45px" }}>
-            {activeDropdown === "customer" ? (
-              <FaChevronDown />
-            ) : (
-              <FaChevronRight />
+          {/* Representative Dropdown */}
+          <div
+            className="sidebar-item"
+            onClick={() => toggleDropdown("Representative")}
+          >
+            <FaStore size={14} />
+            {!isSidebarCollapsed && (
+              <span className="items">Representative</span>
             )}
-          </span>
-        </div>
-
-        {activeDropdown === "customer" && (
-          <div className="customer-dropdown">
-            <div
-              className="dropdown-item"
-              onClick={() => setSelectedItem("Customer Contact Form")}
-            >
-              <FaRegAddressBook style={{ marginRight: "8px" }} />
-              Customer Registration
-            </div>
-            <div
-              className="dropdown-item"
-              onClick={() => setSelectedItem("Customer Table")}
-            >
-              <FaList style={{ marginRight: "8px" }} />
-              Customer List
-            </div>
-          </div>
-        )}
-
-        <div className="sidebar-item" onClick={() => toggleDropdown("product")}>
-          <FaBox /> <span>Product</span>
-          <span style={{ marginLeft: "45px" }}>
-            {activeDropdown === "product" ? (
-              <FaChevronDown />
-            ) : (
-              <FaChevronRight />
+            {!isSidebarCollapsed && (
+              <span style={{ marginLeft: "20px" }}>
+                {activeDropdown === "Representative" ? (
+                  <FaChevronDown className="dropdown-icon" />
+                ) : (
+                  <FaChevronRight className="dropdown-icon" />
+                )}
+              </span>
             )}
-          </span>
-        </div>
-
-        {/* Vendor Dropdown Menu */}
-        {activeDropdown === "product" && (
-          <div className="vendor-dropdown">
-            <div
-              className="dropdown-item"
-              onClick={() => setSelectedItem("Product Form")}
-            >
-              <FaUserPlus style={{ marginRight: "8px" }} />
-              Product Registration
-            </div>
-            <div
-              className="dropdown-item"
-              onClick={() => setSelectedItem("Product List")}
-            >
-              <FaList style={{ marginRight: "8px" }} />
-              Product List
-            </div>
           </div>
-        )}
+          {!isSidebarCollapsed && activeDropdown === "Representative" && (
+            <div className="sidebar-submenu">
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Vendor Representative Form")}
+              >
+                Vendor Representative Registration
+              </div>
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Vendor Representative List")}
+              >
+                Vendor Representative List
+              </div>
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Customer Representative Form")}
+              >
+                Customer Representative Registration
+              </div>
+            </div>
+          )}
 
-        <div
-          className="sidebar-item"
-          onClick={() => setSelectedItem("History")}
-        >
-          <FaHistory /> <span>History</span>
-        </div>
-        <div className="sidebar-item" onClick={() => setSelectedItem("Sales")}>
-          <FaDollarSign /> <span>Sales</span>
-        </div>
-        <div
-          className="sidebar-item"
-          onClick={() => setSelectedItem("Messages")}
-        >
-          <FaEnvelope /> <span>Messages</span>
-        </div>
-        <div
-          className="sidebar-item"
-          onClick={() => setSelectedItem("Notifications")}
-        >
-          <FaBell /> <span>Notifications</span>
-        </div>
-        <div className="sidebar-item" onClick={() => toggleDropdown("Form")}>
-          {/* Form icon, label, and chevron */}
-          <FaShoppingCart /> {/* Space between icon and text */}
-          <span>Order</span>
-          <span style={{ marginLeft: "60px" }}>
-            {activeDropdown === "Form" ? <FaChevronDown /> : <FaChevronRight />}
-          </span>
-        </div>
-        {activeDropdown === "Form" && (
-          <div className="sidebar-submenu">
-            <div
-              className="sidebar-subitem"
-              onClick={() => setSelectedItem("order Registration")}
-            >
-              <FaUserPlus />{" "}
-              <span className="light-text">Order Registration</span>
-            </div>
-            <div
-              className="sidebar-subitem"
-              onClick={() => setSelectedItem("Order Details Registration")}
-            >
-              <FaUserPlus />{" "}
-              <span className="light-text">Order Detail Registration</span>
-            </div>
-            <div
-              className="sidebar-subitem"
-              onClick={() => setSelectedItem("Pending")}
-            >
-              <FaList /> <span className="light-text">Order List</span>
-            </div>
+          {/* Customer Dropdown */}
+          <div
+            className="sidebar-item"
+            onClick={() => toggleDropdown("Customer")}
+          >
+            <FaUser size={14} />
+            {!isSidebarCollapsed && <span className="items">Customer</span>}
+            {!isSidebarCollapsed && (
+              <span style={{ marginLeft: "52px" }}>
+                {activeDropdown === "Customer" ? (
+                  <FaChevronDown className="dropdown-icon" />
+                ) : (
+                  <FaChevronRight className="dropdown-icon" />
+                )}
+              </span>
+            )}
           </div>
-        )}
-        <div
-          className="sidebar-item"
-          onClick={() => setSelectedItem("Settings")}
-        >
-          <FaCog /> <span>Settings</span>
+          {!isSidebarCollapsed && activeDropdown === "Customer" && (
+            <div className="sidebar-submenu">
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Customer Contact Form")}
+              >
+                Customer Registration
+              </div>
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Customer Table")}
+              >
+                Customer List
+              </div>
+            </div>
+          )}
+
+          {/* Product Dropdown */}
+          <div
+            className="sidebar-item"
+            onClick={() => toggleDropdown("Product")}
+          >
+            <FaBox size={14} />
+            {!isSidebarCollapsed && <span className="items">Product</span>}
+            {!isSidebarCollapsed && (
+              <span style={{ marginLeft: "62px" }}>
+                {activeDropdown === "Product" ? (
+                  <FaChevronDown className="dropdown-icon" />
+                ) : (
+                  <FaChevronRight className="dropdown-icon" />
+                )}
+              </span>
+            )}
+          </div>
+          {!isSidebarCollapsed && activeDropdown === "Product" && (
+            <div className="sidebar-submenu">
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Product Form")}
+              >
+                Product Registration
+              </div>
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Product List")}
+              >
+                Product List
+              </div>
+            </div>
+          )}
+
+          {/* Order Dropdown */}
+          <div className="sidebar-item" onClick={() => toggleDropdown("Form")}>
+            <FaShoppingCart size={14} />
+            {!isSidebarCollapsed && <span className="items">Order</span>}
+            {!isSidebarCollapsed && (
+              <span style={{ marginLeft: "70px" }}>
+                {activeDropdown === "Form" ? (
+                  <FaChevronDown className="dropdown-icon" />
+                ) : (
+                  <FaChevronRight className="dropdown-icon" />
+                )}
+              </span>
+            )}
+          </div>
+          {!isSidebarCollapsed && activeDropdown === "Form" && (
+            <div className="sidebar-submenu">
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Order Registration")}
+              >
+                Order Registration
+              </div>
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Order Details Registration")}
+              >
+                Order Detail Registration
+              </div>
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Pending")}
+              >
+                Order List
+              </div>
+            </div>
+          )}
+
+          <div
+            className="sidebar-item"
+            onClick={() => setSelectedItem("Sales")}
+          >
+            <FaDollarSign size={14} /> {!isSidebarCollapsed && <span className="items">Sales</span>}
+          </div>
+
+          <div
+            className="sidebar-item"
+            onClick={() => setSelectedItem("Notifications")}
+          >
+            <FaBell size={14} />  {!isSidebarCollapsed &&  <span className="items">Notifications</span>}
+          </div>
+          <div
+            className="sidebar-item"
+            onClick={() => setSelectedItem("Messages")}
+          >
+            <FaEnvelope size={14} />  {!isSidebarCollapsed &&  <span className="items">Messages</span>}
+          </div>
+          <div
+            className="sidebar-item"
+            onClick={() => setSelectedItem("History")}
+          >
+            <FaHistory size={14} />  {!isSidebarCollapsed &&  <span className="items">History</span>}
+          </div>
+          <div
+            className="sidebar-item"
+            onClick={() => setSelectedItem("Settings")}
+          >
+            <FaCog size={14} /> {!isSidebarCollapsed &&  <span className="items">Settings</span>}
+          </div>
         </div>
       </div>
 
-      <div className="main-content">
-        <nav className="navbar">
+      <div className={`main-content ${isSidebarVisible ? "overlay" : ""}`}>
+      <nav className={`navbar ${isSidebarCollapsed ? "collapsed-navbar" : ""}`}>
           <div className="navbar-left">
-            <div className="timezone">
-              <FaClock />{" "}
-              <span>
-                {formattedDate} {formattedTime}
-              </span>
+            <div>
+              <button  className="leftalign">
+                <AlignLeft size={20} onClick={toggleSidebar} />
+              </button>
             </div>
-            <div
-              className="refresh-icon"
-              onClick={() => window.location.reload()}
-            >
-              <FaSync />
+
+            <div className="main-header-center d-none d-lg-block">
+              <input
+                className="search-input"
+                type="search"
+                placeholder="Search for anything..."
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
+              <button className="btn">
+                <Search className="d-none d-md-block" />
+              </button>
             </div>
           </div>
           <div className="navbar-right">

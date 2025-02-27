@@ -1,63 +1,71 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { TextField, Button, Box, Typography, IconButton, InputAdornment } from '@mui/material';
-import GoogleIcon from '@mui/icons-material/Google';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
-import logo from './logo.png'; 
-import './LoginPage.css'; 
-import { BASE_URL } from './config';
+import React, { useState } from "react";
+import axios from "axios";
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
+import GoogleIcon from "@mui/icons-material/Google";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import logo from "./logo.png";
+import "./LoginPage.css";
+import { BASE_URL } from "./config";
 
 const LoginPage = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [apiError, setApiError] = useState('');
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [apiError, setApiError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
     if (!validateEmail(email)) {
-      setEmailError('Invalid email format');
+      setEmailError("Invalid email format");
       return;
     }
     if (!validatePassword(password)) {
-      setPasswordError('Password must be at least 4 characters');
+      setPasswordError("Password must be at least 4 characters");
       return;
     }
-  
+
     setIsLoading(true);
-    setApiError('');
+    setApiError("");
     try {
-      const response = await axios.post(`${ BASE_URL }employee/login/`, {
+      const response = await axios.post(`${BASE_URL}employee/login/`, {
         email,
         password,
       });
-  
+
       if (response.status === 200 && response.data) {
         const { message, access } = response.data; // Adjust based on actual response structure
         if (message === "Login successful" && access) {
-          localStorage.setItem('authToken', access);
-          navigate('/home');
+          localStorage.setItem("authToken", access);
+          navigate("/home");
         } else {
-          setApiError('Invalid credentials. Please try again.');
+          setApiError("Invalid credentials. Please try again.");
         }
       }
     } catch (error) {
-      setApiError(error.response?.data?.message || 'Login failed. Please check your credentials and try again.');
+      setApiError(
+        error.response?.data?.message ||
+          "Login failed. Please check your credentials and try again."
+      );
     } finally {
       setIsLoading(false);
     }
   };
-  
-  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  
-  const validatePassword = (password) => password.length >= 4; // Allow minimum length of 4 characters
-  
 
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const validatePassword = (password) => password.length >= 4; // Allow minimum length of 4 characters
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
@@ -88,24 +96,25 @@ const LoginPage = () => {
           value={email}
           onChange={(e) => {
             setEmail(e.target.value);
-            setEmailError('');
+            setEmailError("");
           }}
           error={!!emailError}
           helperText={emailError}
-          className="text-field"
+          className="text_field"
+          
         />
 
         <Box mb={2}>
           <TextField
             fullWidth
             label="Password"
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             variant="outlined"
             margin="normal"
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
-              setPasswordError('');
+              setPasswordError("");
             }}
             error={!!passwordError}
             helperText={passwordError}
@@ -123,14 +132,13 @@ const LoginPage = () => {
         </Box>
 
         <Button
-      
           variant="contained"
           color="primary"
           className="sign-in-button"
           onClick={handleLogin}
           disabled={isLoading}
         >
-          {isLoading ? 'Signing In...' : 'Sign In'}
+          {isLoading ? "Signing In..." : "Sign In"}
         </Button>
 
         <Typography variant="body2" textAlign="center" mb={1}>
@@ -138,17 +146,16 @@ const LoginPage = () => {
             Forgot password?
           </a>
         </Typography>
-         
+
         <Typography variant="body2" textAlign="center" mb={1}>
-          If you forgot your password then you can 
+          If you forgot your password then you can
           <a href="/forgotpassword" className="link">
             Change password?
           </a>
         </Typography>
 
-
         <Typography variant="body2" textAlign="center" mb={3}>
-          Don't have an account?{' '}
+          Don't have an account?{" "}
           <a href="/signup" className="link">
             Create now
           </a>

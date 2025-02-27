@@ -3,37 +3,88 @@
     height: 100vh;
     font-family: Arial, sans-serif;
     background-color: #ffffff;
-    margin: 0; /* Remove margin to prevent spacing */
+    margin: 0;
 }
 
 .sidebar {
-    width: 250px;
+    width: 240px;
     background-color: #FAF9F6;
     border-right: 1px solid #e0e0e0;
     display: flex;
     flex-direction: column;
-    padding: 10px;
     margin-right: 0;
-    box-sizing: border-box; /* Make sure padding is included in width */
+    box-sizing: border-box;
     font-weight: bolder;
-    overflow-y: auto;
+    font-size: 14px;
+    font-weight: 400;
+    position: relative;
 }
 
 .sidebar-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #FAF9F6;
+    border-block-end-color: rgb(234, 232, 241);
+    border-block-end-style: solid;
+    border-block-end-width: 1px;
+    border-inline-end-color: rgb(234, 232, 241);
+    border-inline-end-style: solid;
+    border-inline-end-width: 1px;
+    padding: 15px 20px;
+    font-family: Roboto, sans-serif;
+}
+
+.sidebar-header a {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    font-size: 18px;
+    justify-content: center;
     font-weight: bold;
-    color: black;
-    margin-bottom: 10px;
-    padding: 5px;
+    text-decoration: none;
+    color: #3498db;
 }
 
 .logo {
-    width: 50px; /* Adjust size as needed */
-    height: auto; /* Maintain aspect ratio */
-    margin-right: 10px; /* Space between logo and heading */
+    width: 40px;
+    height: auto;
+    margin-right: 0;
+    margin-bottom: 5px;
 }
+
+.sidebar-content {
+    height: 100vh; /* Full height of the sidebar */
+    overflow-y: hidden; /* Hidden by default */
+    position: relative; /* For proper positioning */
+
+    
+}
+
+.sidebar-content:hover {
+    overflow-y: auto; /* Enable scrolling when hovered */
+}
+
+/* Customize the scrollbar */
+.sidebar-content::-webkit-scrollbar {
+    width: 3px; /* Scrollbar width */
+    height: 50%;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb {
+    background-color: rgba(3, 27, 78, 0.8); /* Scrollbar color */
+    border-radius: 10px; /* Rounded edges */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.sidebar-content::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(3, 27, 78, 1); /* Darker color on hover */
+}
+
+.sidebar-content::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1); /* Track background */
+    border-radius: 10px; /* Rounded edges */
+}
+
 
 .sidebar-item {
     display: flex;
@@ -45,11 +96,20 @@
     border-radius: 5px;
     transition: background-color 0.3s ease;
     position: relative;
+    color: rgb(91, 110, 136);
 }
 
+.sidebar-item .items{
+    font-size: 13.6px;
+}
+
+.sidebar-item .items:hover{
+    color: #0d6efd;
+}
+
+
 .sidebar-item:hover, .sidebar-item.active {
-    background-color: #f0f3f7;
-    color: #3498db;
+    color: #0d6efd;;
 }
 
 .rotate-icon {
@@ -65,39 +125,54 @@
 }
 
 .sidebar-item span {
-    margin-left: 10px;
+    margin-left: 20px;
     font-size: 16px;
     font-weight: 500;
+    color: rgb(91, 110, 136);
 }
 
-/* Responsive Styles */
+.sidebar-item svg {
+    margin-left: 20px;
+    text-transform: uppercase;
+    
+  }
+
+.main-items{
+   margin-left:30px;
+}
+
+.dropdown-icon {
+    font-size: 8px; /* Adjust the size as needed */
+    color: rgb(91, 110, 136);
+    font-family: feather;
+    font-size: 12.6px;
+  }
+  
+
+  .icon {
+    font-size: 14px;
+    margin-right: 8px;
+  }
+  
+
+/* Small Screen: Hide Sidebar Initially */
 @media (max-width: 768px) {
     .sidebar {
-        width: 60px; /* Smaller width for mobile */
+      transform: translateX(-100%);
+      width: 100%; /* Full screen width */
+      height: 100vh; /* Full height */
+      z-index: 1000; /* Ensure it stays above content */
+      background: rgba(51, 51, 51, 0.9); /* Slight transparency */
     }
-
-    .sidebar-item span, .sidebar-header h3, .sidebar-subitem span {
-        display: none; /* Hide text on small screens */
+  
+    .sidebar.show {
+      transform: translateX(0);
     }
-
-    .sidebar-item , .sidebar-subitem  {
-        justify-content: center; /* Center icons */
+  
+    .main-content.overlay {
+      filter: blur(2px); /* Blur background when sidebar is open */
     }
-
-    
-    
-    .sidebar-item:hover {
-        background-color: #f0f3f7; /* Background color on hover */
-        color: #3498db; /* Change text color on hover */
-    }
-
-
-    .logo {
-        width: 40px; /* Adjust logo size as needed */
-        height: auto; /* Maintain aspect ratio */
-        
-    }
-}
+  }
 
 .sidebar-submenu {
     padding-left: 20px;
@@ -108,20 +183,19 @@
 .sidebar-subitem {
     display: flex;
     align-items: center;
+    font-family: Roboto, sans-serif;
     padding: 9px;
     cursor: pointer;
     color: #34495e;
     border-radius: 5px;
     transition: background-color 0.3s ease;
     font-weight: normal; 
+    margin-left: 40px;
+    font-size: 13px;
 }
 
-.sidebar-subitem span{
-    margin-left: 10px;
-}
 
 .sidebar-subitem:hover {
-    background-color: #f0f3f7;
     color: #3498db;
 }
 
@@ -130,7 +204,7 @@
     padding: 20px;
     background-color: #ecf0f1;
     overflow-y: auto;
-    margin-left: 0; /* Remove any margin */
+    margin-left: 0%;
     padding-top: 80px; /* Ensure no padding at the top that might push it down */
 }
 
@@ -140,14 +214,15 @@
     align-items: center;
     position: fixed; /* Make navbar fixed to align with sidebar */
     top: 0;
-    left: 250px; /* Align navbar perfectly with the sidebar */
-    width: calc(100% - 250px); /* Adjust width to fit remaining space */
+    left: 240px;
+    width: calc(100% - 240px); 
     height: 70px;
-    background-color:#FAF9F6;
+    background-color: #FAF9F6;
     padding: 10px 20px;
     color: black;
     z-index: 1000; /* Ensure navbar is above other content */
     box-sizing: border-box;
+    transition: left 0.3s ease, width 0.3s ease;
 }
 
 .navbar-right {
@@ -169,16 +244,105 @@
     color: #3498db; /* Color on hover */
 }
 
-.timezone {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
+.collapsed-navbar {
+    left: 80px; /* Adjust left position when sidebar is collapsed */
+    width: calc(100% - 80px); /* Reduce width when sidebar is collapsed */
 }
 
-.refresh-icon {
-    cursor: pointer;
-    margin-right: 20px;
+  .expanded-navbar {
+    width: calc(100% - 100px); /* Adjust when sidebar is collapsed */
 }
+
+@media screen and (max-width: 768px) {
+    .navbar {
+        left: 0; /* Align to the left edge */
+        width: 100%; /* Make it full width */
+    }
+}
+
+
+.main-header-center {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 400px; /* Adjust width as needed */
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 10px 45px 10px 15px; /* Adjusted right padding for icon */
+    border: 1px solid #ccc;
+    border-radius: 20px; /* Rounded corners */
+    font-size: 13px;
+    outline: none;
+    background-color: rgb(236, 240, 250);
+  }
+  
+  .main-header-center .btn {
+    position: absolute;
+    right: 0px; /* Move icon fully inside */
+    top: 25%;
+    left: 150px;
+    transform: translateY(-50%); /* Centers the icon vertically */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    padding: 0;
+    height: 100%; /* Ensures full height */
+  }
+  
+  .main-header-center .btn svg {
+    width: 20px;  /* Adjust icon size */
+    height: 20px;
+  }
+  
+  .main-header-center .btn:hover {
+    color: #000;
+  }
+  
+  .sidebar.collapsed {
+    width: 80px; /* Adjust as needed */
+    transition: width 0.1s ease; /* Smooth transition */
+    overflow: hidden; /* Hide content when collapsed */
+    white-space: nowrap;
+  }
+  
+  .sidebar:hover {
+    width: 240px;
+  }
+  
+  .sidebar:hover .items {
+    display: inline;
+  }
+  
+  .sidebar .items {
+    display: block;
+  }
+  
+  .sidebar:hover .main-items {
+    display: block;
+  }
+  
+
+  
+
+  .navbar-left .leftalign {
+display: flex;
+    align-items: center;
+    
+    size: 10px;
+    background: transparent;
+    border: none; /* Optional: Remove border if needed */
+    color: #0d6efd;
+    width: 70px;
+}
+
+
 
 .session-details {
     display: flex;

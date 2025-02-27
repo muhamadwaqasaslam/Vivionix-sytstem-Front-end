@@ -35,8 +35,9 @@
   margin-bottom: 12px;
 }
 
-.text-field {
+.text_field {
   margin-bottom: 24px;
+  border: none;
 }
 
 .login-box .sign-in-button {
@@ -72,4 +73,5 @@
 .google-button:hover{
   background-color: white;
 }
+
 

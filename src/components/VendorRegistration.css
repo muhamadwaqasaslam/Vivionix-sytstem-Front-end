@@ -1,181 +1,129 @@
+/* Vendor Form Container */
+.vendor-form-container {
+  width: 98%;
+  max-width: 1400px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  overflow-x: auto;
+}
 
+/* Heading */
+.vendor-heading {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
 
-/* Main container for the form */
-.vendor_form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* Table Styling */
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.vendor-table, .contact-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.vendor-table th, .contact-table th {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  padding: 12px;
+  text-align: left;
+}
+
+.vendor-table td, .contact-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.vendor-table tr:nth-child(even), .contact-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Input Fields */
+.vendor-input, .vendor-select, .vendor-file-upload {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  background: #fff;
+  transition: 0.3s;
+}
+
+.vendor-input:focus, .vendor-select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Buttons */
+.vendor-btn {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 5px;
+}
+
+.vendor-table td input,
+.vendor-table td select {
+  width: 90%;
+  text-align: center;
+}
+
+.contact-table td input,
+.contact-table td select {
+  width: 90%;
+  text-align: center;
+}
+
+.vendor-btn.add-more {
+  background-color: #28a745;
+  color: white;
+}
+.vendor-btn.add-more:hover {
+  background-color: #218838;
+}
+
+.vendor-btn.save {
+  background-color: #ffc107;
+  color: #333;
+}
+.vendor-btn.save:hover {
+  background-color: #e0a800;
+}
+
+.vendor-btn.submit {
+  background-color: #007bff;
+  color: white;
+}
+.vendor-btn.submit:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .vendor-form-container {
+    padding: 15px;
+  }
+  .vendor-btn {
     width: 100%;
   }
-  
-  /* Wrapper for forms to allow side-by-side layout */
-  .forms-wrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 30px;
-    width: 100%;
-    flex-wrap: wrap;
-    
-  }
-  
-  /* Main form styling */
-  .vendor_registration {
-    display: flex;
-    flex-direction: column;
-    padding: 40px;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    width: 60%;
-    background-color: #ffffff;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    min-height: 420px;
-    margin-top: 30px;
-  }
-  
-  /* Form heading */
-  .heading {
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  /* Make the container of the PhoneInput component full width */
-  .input-group .phone-input {
-    width: 100%;
-  }
-  
-  /* Adjust the width of the input inside PhoneInput */
-  .input-group .phone-input input[type="tel"] {
-    width: 100%;
-    padding-left: 45px; /* Adjust if needed to account for the flag */
-    box-sizing: border-box;
-    background-color: #fafafa;
-  }
-  
-  /* Input group styling */
-  .input-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-  }
-  
-  .input-group label {
-    font-size: 16px;
-    color: #555;
-  }
-  
-  input[type="checkbox"] {
-    margin-left: 10px;
-  }
-  
-  
-  
-  .input-group input,
-  .input-group select {
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-    font-size: 1rem;
-    color: #333;
-    background-color: #fafafa;
-    transition: border-color 0.2s ease-in-out;
-  }
-  
-  .input-group input:focus {
-    border-color: #4a90e2;
-    outline: none;
-  }
-  
-  /* Link style for adding representative information */
-  .toggle-link {
-    color: #007bff;
-    font-weight: 500;
-    cursor: pointer;
-    text-decoration: underline;
-  }
-  
-  .toggle-link:hover {
-    color: #0056b3;
-    text-decoration: none;
-  }
-  
-  /* Submit button styling */
-  .submit-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 25px;
-  }
-  
-  button {
-    padding: 12px 20px;
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s ease;
-    width: 20%;
-    margin-top: 10px;
-  }
-  
-  button:hover {
-    background-color: #357abd;
-  }
-  
-  /* Representative Input Section */
-  .representative-input {
-    display: flex;
-    align-items: center;
-  }
-  
-  .representative-input input {
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-    font-size: 1rem;
-    color: #333;
-    background-color: #fafafa;
-    margin-right: 10px;
-    width: 100%;
-  }
-  
-  .add-icon {
-    background-color: none transparent;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 50%;
-    font-size: 18px;
-    cursor: pointer;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .add-icon:hover {
-    background-color: #357abd;
-  }
-  
-  /* List of Representatives */
-  .representatives-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .representative-item {
-    padding: 8px;
-    background-color: #f0f0f0;
-    margin-bottom: 5px;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-  
-  
-  
+}

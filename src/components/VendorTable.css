@@ -1,182 +1,175 @@
-.vendor-list {
-  max-width: 100%;
+.vendor-container {
+  width: 97%;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+}
+
+.vendor-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
   text-align: center;
-  /* background-color: white; */
-  border-radius: 12px;
-  /* box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1); Softer shadow */
-  padding: 10px;
 }
 
 .vendor-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: white;
-  margin-top: 20px;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-.vendor-table th,
-.vendor-table td {
-  padding: 12px 15px;
+.vendor-table th, .vendor-table td {
+  padding: 12px;
   text-align: left;
-  border: 1px solid #ddd;
-  font-size: 14px;
+  border-bottom: 1px solid #ddd;
 }
 
 .vendor-table th {
-  position: relative; /* Ensures proper alignment within the table */
-  padding: 8px; /* Adjust padding to fit input fields */
-  text-align: left;
-  vertical-align: middle; /* Aligns input fields centrally */
-  background-color: #4CAF50;
+  background: #007bff;
   color: white;
-  font-size: 14px;
 }
 
-.vendor-table .search-row input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  box-sizing: border-box;
+.vendor-table td a {
+  color: #007bff;
+  text-decoration: none;
 }
 
-
-
-.vendor-table .search-row input:focus {
-  background-color: #e6f7ff;
-  border-color: #80bdff;
+.vendor-table td a:hover {
+  text-decoration: underline;
 }
 
-.vendor-update-button {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 14px;
-  cursor: pointer;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-.vendor-update-button:hover {
-  background-color: #218838;
-}
-
-.vendor-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+.action{
+  width: 200px;
   display: flex;
+  border: none !important;;
+}
+
+.btn-view {
+  background: #28a745;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin-right: 3px;
+  border: none;
+  cursor: pointer;
+  width: 100px;
+  font-size: small;
+}
+
+.btn-update {
+  background: #ffc107;
+  color: black;
+  padding: 5px 10px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  width: 100px;
+  font-size: small;
+}
+
+.btn-print {
+  background: #17a2b8;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 5px;
+  margin-top: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-save {
+  background: #007bff;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Modal styles */
+.modal {
+  display: flex;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   align-items: center;
   justify-content: center;
-  z-index: 1000;
 }
 
-.vendor-modal-content {
-  background-color: white;
+.modal-content {
+  background: white;
   padding: 40px;
-  border-radius: 12px;
-  max-width: 800px;
-  height: 750px;
-  width: 100%;
-  box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  width: 50%;
   position: relative;
+  height: 85%;
+  overflow: auto;
 }
 
-.vendor-modal-content h3 {
-  margin-top: 0;
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
   font-size: 24px;
-  color: black;
-  text-align: center;
-}
-
-.vendor-modal-content form {
-  display: flex;
-  flex-direction: column;
-}
-
-.vendor-modal-content label {
-
-  font-weight: bold;
-  color: #555;
-}
-
-.vendor-modal-content input[type="text"],
-.vendor-modal-content input[type="email"],
-.vendor-modal-content input[type="date"] {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  margin-bottom: 20px;
-  box-sizing: border-box;
-  background-color: #f9f9f9;
-  transition: border 0.3s ease;
-
-}
-
-
-
-.vendor-modal-content input[type="text"]:focus,
-.vendor-modal-content input[type="email"]:focus,
-.vendor-modal-content input[type="date"]:focus {
-  border-color: #007bff;
-}
-
-.vendor-modal-buttons {
-  display: flex;
-  justify-content: space-between;
-
-}
-
-.vendor-modal-buttons button {
-  padding: 10px 20px;
-  font-size: 14px;
-  border: none;
-  border-radius: 8px;
   cursor: pointer;
 }
 
-.vendor-modal-buttons .vendor-modal-close {
-  background-color: #dc3545;
-  color: white;
-}
 
-.vendor-modal-buttons .vendor-modal-save {
-  background-color: #28a745;
-  color: white;
-}
-
-
-.vendor-error-message,
-.vendor-success-message,
-.vendor-failure-message {
-  width: 400px;
-  margin: 0 auto;
+h3{
   text-align: center;
-  color: white;
-  padding: 12px;
-  border-radius: 4px;
+}
+
+/* Modal styles */
+.modal-vendor {
+  display: flex;
   position: fixed;
-  left: 57%;
-  transform: translateX(-50%);
-  top: 70px;
-  z-index: 1001;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
 }
 
-.vendor-error-message {
-  background-color: #ff99a3f3;
+.modal-content-vendor {
+  background: white;
+  padding: 40px;
+  border-radius: 8px;
+  width: 50%;
+  position: relative;
+  height: 70%;
+  overflow: auto;
 }
 
-.vendor-success-message {
-  background-color: #9affb2;
+/* Modal styles */
+.modal-representative {
+  display: flex;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Ensure full overlay */
+  align-items: center;
+  justify-content: center;
 }
 
-.vendor-failure-message {
-  background-color: #ffc107;
+.modal-content-representative {
+  background: white;
+  padding: 40px;
+  border-radius: 8px;
+  width: 50%;
+  position: relative;
+  height: 70%;
+  overflow-y: auto;
 }
+

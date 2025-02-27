@@ -1,85 +1,176 @@
-/* Main container for the form */
+/* Container Styling */
 .form-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-
+  width: 98%;
+  max-width: 1400px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
 }
 
-/* Main form styling */
-.product_registration {
-  display: flex;
-  flex-direction: column;
-  padding: 40px;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  width: 58%;
-  background-color: #ffffff;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  min-height: 520px;
-}
-
-/* Form heading */
+/* Heading */
 .heading {
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 24px;
   font-weight: bold;
-  color: #333;
   margin-bottom: 20px;
 }
 
-/* Input group styling */
-.input-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-}
-
-.input-group label {
+/* Label Styling */
+label {
+  text-align: left;
   font-size: 16px;
-  color: #555;
+  font-weight: 600;
+  display: block;
+  margin: 10px 0 5px;
 }
 
-.input-group input, .input-group textarea {
+/* Increase dropdown width */
+select {
+  width: 100%;
   padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  box-sizing: border-box;
-  font-size: 1rem;
-  color: #333;
-  background-color: #fafafa;
-  transition: border-color 0.2s ease-in-out;
-}
-
-.input-group .checkbox-availability{
-  margin: 0%;
-}
-
-.input-group input:focus, .input-group textarea:focus {
-  border-color: #4a90e2;
-  outline: none;
-}
-
-/* Submit button styling */
-.submit-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 25px;
-}
-
-button {
-  padding: 12px 20px;
-  background-color: #3498db;
-  color: #fff;
-  border: none;
-  border-radius: 30px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  background: #fff;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-  width: 150px;
+  height: 50px;
+}
+
+/* Specifically for the vendor dropdown */
+.vendor-dropdown {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Input & Select Fields */
+select,
+input[type="text"],
+input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+select {
+  background: #fff;
+  cursor: pointer;
+}
+
+/* Table Wrapper for Scroll */
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+}
+
+/* Table Styling */
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  white-space: nowrap;
+}
+
+.product-table th,
+.product-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+  font-size: 14px;
+  min-width: 150px;
+}
+
+.product-table td input,
+.product-table td select {
+  width: 90%;
+  text-align: center;
+}
+
+.product-table th {
+  background: #007bff;
+  color: white;
+}
+
+.product-table tbody tr:nth-child(even) {
+  background: #f2f2f2;
+}
+
+/* Align Buttons to the Left */
+.button-container {
+  display: flex;
+  gap: 40px;
+  justify-content: flex-start;
+  margin-top: 20px;
+}
+
+.add-more-container {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+/* Button Styling */
+button {
+  padding: 10px 15px;
+  font-size: 16px;
+  color: white;
+  background: #007bff;
+  border: none;
+  
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:disabled {
+  background: gray;
+  cursor: not-allowed;
 }
 
 button:hover {
-  background-color: #357abd;
+  background: #0056b3;
+}
+
+
+
+/* Small Plus and Minus Buttons */
+.add-btn {
+  font-size: 14px;
+  margin: 0 2px;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 50px;
+}
+
+.remove-btn {
+  font-size: 14px;
+  margin: 0 2px;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 50px;
+}
+
+.icon-btn:hover {
+  background: #c82333;
+}
+
+/* Ensure buttons are properly aligned and responsive */
+@media screen and (max-width: 768px) {
+  .button-container {
+    flex-direction: column;
+  }
+
+  button {
+    width: 100%;
+  }
 }
