@@ -2,30 +2,29 @@ import React, { useState } from "react";
 import "./StockForm.css";
 import { FaPlus, FaMinus } from "react-icons/fa";
 
-
 const dummyData = {
-    Product1: {
-      ref: "REF001",
-      brand: "BrandA",
-      packSize: "10 Units",
-      packPrice: "$50",
-      lotNo: "LOT1234"
-    },
-    Product2: {
-      ref: "REF002",
-      brand: "BrandB",
-      packSize: "20 Units",
-      packPrice: "$80",
-      lotNo: "LOT5678"
-    }
-  };
-const StockForm = () => {
+  Product1: {
+    ref: "REF001",
+    brand: "BrandA",
+    packSize: "10 Units",
+    packPrice: "$50",
+    lotNo: "LOT1234"
+  },
+  Product2: {
+    ref: "REF002",
+    brand: "BrandB",
+    packSize: "20 Units",
+    packPrice: "$80",
+    lotNo: "LOT5678"
+  }
+};
 
-    
-    const [products, setProducts] = useState([{}]);
+const StockForm = () => {
+  const [products, setProducts] = useState([{}]);
   const [isSaved, setIsSaved] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [receipt, setReceipt] = useState(null);
+  const [vendor, setVendor] = useState("");
 
   const addProduct = () => {
     setProducts([...products, {}]);
@@ -65,11 +64,10 @@ const StockForm = () => {
 
   const handleProductChange = (index, value) => {
     const updatedProducts = [...products];
-    if (value in dummyData) {
-      updatedProducts[index] = dummyData[value];
-    } else {
-      updatedProducts[index] = {};
-    }
+    updatedProducts[index] = {
+      name: value,
+      ...(dummyData[value] || {})
+    };
     setProducts(updatedProducts);
   };
 
@@ -86,6 +84,16 @@ const StockForm = () => {
         <div className="stock-form-group">
           <label>Stock In By:</label>
           <input type="text" value="User123 (Auto Fetched)" disabled />
+        </div>
+
+        <div className="stock-form-group">
+          <label>Vendor:</label>
+          <input
+            type="text"
+            placeholder="Search Vendor..."
+            value={vendor}
+            onChange={(e) => setVendor(e.target.value)}
+          />
         </div>
 
         <div className="stock-form-group">
@@ -110,31 +118,33 @@ const StockForm = () => {
         </div>
       </div>
 
+      <div className="stock-table-wrapper">
       <h3 className="stock-item-title">Product Details</h3>
       <table className="stock-item-table">
         <thead>
-        <tr>
-            <th style={{ width: "150px" }}>Product Name</th>
-            <th style={{ width: "150px" }}>Product Ref/Cat No</th>
-            <th style={{ width: "150px" }}>Brand Name</th>
-            <th style={{ width: "150px" }}>Pack Size</th>
-            <th style={{ width: "150px" }}>Pack Price</th>
-            <th style={{ width: "150px" }}>Lot No</th>
-            <th style={{ width: "150px" }}>Manufacturing Date</th>
-            <th style={{ width: "150px" }}>Expiry Date</th>
-            <th style={{ width: "150px" }}>Quantity</th>
-            <th style={{ width: "150px" }}>Action</th>
+          <tr>
+            <th>Product Name</th>
+            <th>Product Ref/Cat No</th>
+            <th>Brand Name</th>
+            <th>Pack Size</th>
+            <th>Pack Price</th>
+            <th>Lot No</th>
+            <th>Manufacturing Date</th>
+            <th>Expiry Date</th>
+            <th>Quantity</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {products.map((product, index) => (
+        {products.map((product, index) => (
             <tr key={index}>
               <td>
-                <select onChange={(e) => handleProductChange(index, e.target.value)}>
-                  <option value="">Select Product</option>
-                  <option value="Product1">Product1</option>
-                  <option value="Product2">Product2</option>
-                </select>
+                <input
+                  type="text"
+                  placeholder="Search product..."
+                  value={product.name || ""}
+                  onChange={(e) => handleProductChange(index, e.target.value)}
+                />
               </td>
               <td><input type="text" value={product.ref || ""} disabled /></td>
               <td><input type="text" value={product.brand || ""} disabled /></td>
@@ -158,7 +168,7 @@ const StockForm = () => {
           ))}
         </tbody>
       </table>
-
+      </div>
 
       <div className="button-container">
         <button type="button" className="stock-btn save" onClick={handleSave} disabled={isSaved}>

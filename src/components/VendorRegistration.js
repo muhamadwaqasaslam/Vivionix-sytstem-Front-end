@@ -72,42 +72,36 @@ const VendorForm = () => {
   return (
     <div className="vendor-form-container">
       <h2 className="vendor-heading">Vendor Registration Form</h2>
-      <h2>Vendor Information Table</h2>
-
-      <div className="table-container">
-        <table className="vendor-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Address</th>
-              <th>Website</th>
-              <th>Type</th>
-              <th>Contact Email</th>
-              <th>Contact Number</th>
-              <th>Product Catalog</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input type="text" name="name" value={vendor.name} onChange={handleVendorChange} required /></td>
-              <td><input type="text" name="address" value={vendor.address} onChange={handleVendorChange} required /></td>
-              <td><input type="text" name="website" value={vendor.website} onChange={handleVendorChange} /></td>
-              <td>
-                <select name="type" value={vendor.type} onChange={handleVendorChange}>
-                  <option value="Manufacturer">Manufacturer</option>
-                  <option value="Importer">Importer</option>
-                  <option value="Distributor">Distributor</option>
-                </select>
-              </td>
-              <td><input type="text" name="productEmail" value={vendor.productEmail} onChange={handleVendorChange} required /></td>
-              <td><input type="text" name="productNumber" value={vendor.productNumber} onChange={handleVendorChange} /></td>
-              <td><input type="file" name="productCatalog" onChange={handleVendorChange} /></td>
-            </tr>
-          </tbody>
-        </table>
+      
+      <div className="vendor-section">
+        <label>Name:</label>
+        <input type="text" name="name" value={vendor.name} onChange={handleVendorChange} required />
+        
+        <label>Address:</label>
+        <input type="text" name="address" value={vendor.address} onChange={handleVendorChange} required />
+        
+        <label>Website:</label>
+        <input type="text" name="website" value={vendor.website} onChange={handleVendorChange} />
+        
+        <label>Type:</label>
+        <select name="type" value={vendor.type} onChange={handleVendorChange}>
+          <option value="Manufacturer">Manufacturer</option>
+          <option value="Importer">Importer</option>
+          <option value="Distributor">Distributor</option>
+        </select>
+        
+        <label>Contact Email:</label>
+        <input type="text" name="contactEmail" value={vendor.contactEmail} onChange={handleVendorChange} required />
+        
+        <label>Contact Number:</label>
+        <input type="text" name="productNumber" value={vendor.productNumber} onChange={handleVendorChange} />
+        
+        <label>Product Catalog:</label>
+        <input type="file" name="productCatalog" onChange={handleVendorChange} />
       </div>
 
-      <h2>Product Person/Representative</h2>
+
+      <h2>Contact Person/Representative</h2>
       <div className="table-container">
         <table className="product-table">
           <thead>

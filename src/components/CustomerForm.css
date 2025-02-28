@@ -50,12 +50,17 @@
   text-align: left;
 }
 
-/* Table Styling */
+/* Responsive Table Wrapper */
+.representative-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Ensure Table Remains a Table */
 .representative-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-  border-bottom: 1px solid #ccc;
+  min-width: 600px; /* Ensures it does not shrink too much */
 }
 
 .representative-table th{
@@ -102,25 +107,77 @@
 }
 
 /* Action Buttons */
-.row-icon {
+.row-icon{
   display: flex;
   justify-content: center; /* Centers buttons */
   gap: 10px;
 }
 
 
-.plus {
-  background-color: #007bff;
+/* Small Plus and Minus Buttons */
+.row-icon .add-btn {
+  font-size: 14px;
+  margin: 0 2px;
+  border: none !important;
   color: white;
+  border-radius: 5px;
+  cursor: pointer;
   width: 50px;
-  border-radius: 3%;
- 
 }
-.remove {
-  background-color: #007bff;
+
+.row-icon .remove-btn {
+  font-size: 14px;
+  margin: 0 2px;
+  border: none;
   color: white;
+  border-radius: 5px;
+  cursor: pointer;
   width: 50px;
-  border-radius: 3%;
 }
 
 
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .customer-form-container {
+    padding: 30px;
+  }
+  .representative-table td input, .representative-table td select {
+    width: 85%;
+  }
+}
+
+@media (max-width: 768px) {
+  .customer-form-container {
+    padding: 20px;
+  }
+  .representative-table th, .representative-table td {
+    padding: 8px;
+  }
+  .representative-table td input, .representative-table td select {
+    width: 80%;
+  }
+  .row-icon {
+    gap: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .customer-form-container {
+    padding: 10px;
+  }
+  .customer-form-title {
+    font-size: 18px;
+  }
+  .representative-table th, .representative-table td {
+    padding: 5px;
+    font-size: 12px;
+  }
+  .representative-table td input, .representative-table td select {
+    width: 75%;
+    font-size: 12px;
+  }
+  .row-icon {
+    flex-direction: column;
+  }
+}

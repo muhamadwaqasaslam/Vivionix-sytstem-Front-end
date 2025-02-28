@@ -17,6 +17,7 @@ const ProductForm = () => {
   };
 
   const [vendor, setVendor] = useState('');
+  const [vendorList] = useState(['Vendor A', 'Vendor B', 'Vendor C']);
   const [products, setProducts] = useState([{ ...initialProductState, id: Date.now() }]);
   const [isSaved, setIsSaved] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -44,8 +45,8 @@ const ProductForm = () => {
 
   const handleSave = () => {
     setIsSaved(true);
-    setIsSubmitted(false); // Reset submit state when saving again
-    alert("Vendor details saved successfully!");
+    setIsSubmitted(false);
+    alert("Product details saved successfully!");
   };
 
   const handleSubmit = (e) => {
@@ -55,22 +56,31 @@ const ProductForm = () => {
       return;
     }
     setIsSubmitted(true);
-    setIsSaved(false); // Disable "Save" again after submission
-    alert("Vendor registration submitted successfully!");
+    setIsSaved(false);
+    alert("Product registration submitted successfully!");
   };
 
   return (
-    <div className="form-container">
-      <h1 className="heading">Product Registration Form</h1>
+    <div className="product-form-container">
+      <h1 className="product-heading">Product Registration Form</h1>
       
       <label>Vendor Name:</label>
-      <select value={vendor} onChange={handleVendorChange} required>
-        <option value="">Select Vendor</option>
-        <option value="Vendor A">Vendor A</option>
-        <option value="Vendor B">Vendor B</option>
-      </select>
+      <input 
+        type="text" 
+        value={vendor} 
+        onChange={handleVendorChange} 
+        list="vendor-list" 
+        placeholder="Search or enter vendor name" 
+        required 
+        className='vendor-search'
+      />
+      <datalist id="vendor-list">
+        {vendorList.map((v, index) => (
+          <option key={index} value={v} />
+        ))}
+      </datalist>
 
-      <div className="table-container">
+      <div className="product-table-container">
         <table className="product-table">
           <thead>
             <tr>
@@ -124,11 +134,11 @@ const ProductForm = () => {
         </table>
       </div>
 
-      <div className="button-container">
-        <button type="button" className="vendor-btn save" onClick={handleSave} disabled={isSaved}>
+      <div className="product-button-container">
+        <button type="button" className="product-btn save" onClick={handleSave} disabled={isSaved}>
           Save
         </button>
-        <button type="submit" className="vendor-btn submit" onClick={handleSubmit} disabled={!isSaved || isSubmitted}>
+        <button type="submit" className="product-btn submit" onClick={handleSubmit} disabled={!isSaved || isSubmitted}>
           Submit
         </button>
       </div>

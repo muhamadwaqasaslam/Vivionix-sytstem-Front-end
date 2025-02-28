@@ -139,7 +139,7 @@ const ProductTable = () => {
                 <td>{product.certifications}</td>
                 <td>{product.category}</td>
                 <td>{product.productID}</td>
-                <td>
+                <td className="product-btn-row">
                   <button
                     className="update-btn"
                     onClick={() => handleUpdate(product)}

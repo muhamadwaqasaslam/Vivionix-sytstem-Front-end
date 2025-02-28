@@ -1,11 +1,14 @@
+/* General container styles */
 .vendor-container {
   width: 97%;
   padding: 20px;
   background: #f9f9f9;
   border-radius: 10px;
   margin-top: 20px;
+  overflow-x: auto;
 }
 
+/* Title */
 .vendor-title {
   font-size: 24px;
   font-weight: bold;
@@ -13,6 +16,7 @@
   text-align: center;
 }
 
+/* Table Styles */
 .vendor-table {
   width: 100%;
   border-collapse: collapse;
@@ -23,8 +27,8 @@
 
 .vendor-table th, .vendor-table td {
   padding: 12px;
+  border: 1px solid #ddd;
   text-align: left;
-  border-bottom: 1px solid #ddd;
 }
 
 .vendor-table th {
@@ -41,165 +45,145 @@
   text-decoration: underline;
 }
 
-.action{
-  width: 200px;
-  display: flex;
-  border: none !important;;
+/* Buttons */
+.btn-view, .btn-update {
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 .btn-view {
-  background: #28a745;
+  background-color: #28a745;
   color: white;
-  padding: 5px 10px;
-  border-radius: 3px;
-  margin-right: 3px;
-  border: none;
-  cursor: pointer;
-  width: 100px;
-  font-size: small;
 }
 
 .btn-update {
-  background: #ffc107;
+  background-color: #ffc107;
   color: black;
-  padding: 5px 10px;
-  border-radius: 3px;
-  border: none;
-  cursor: pointer;
-  width: 100px;
-  font-size: small;
 }
 
-.btn-print {
-  background: #17a2b8;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 5px;
-  margin-top: 10px;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-save {
-  background: #007bff;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-}
-
-.vendor-row-button{
+.vendor-row-button {
   display: flex;
-  gap: 10px;
+  gap: 5px;
 }
 
-/* Modal styles */
-.modal {
-  display: flex;
+/* Modal Styles */
+.modal-update, .modal-products, .modal-representative {
   position: fixed;
-  z-index: 1000;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
   justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-.modal-content {
+.modal-content-update, .modal-content-products, .modal-content-representative {
   background: white;
-  padding: 40px;
-  border-radius: 8px;
-  width: 50%;
-  position: relative;
-  height: 85%;
-  overflow: auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 40%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.modal-content-update h3, .modal-content-products h3, .modal-content-representative h3 {
+  margin-bottom: 15px;
 }
 
 .close {
   position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 24px;
+  top: 15px;
+  right: 20px;
+  font-size: 20px;
   cursor: pointer;
 }
 
-
-h3{
-  text-align: center;
-}
-
-/* Modal styles */
-.modal-update {
+/* Forms */
+.vendor-form, .product-form {
   display: flex;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.modal-content-update {
-  background: white;
-  padding: 40px;
-  border-radius: 8px;
-  width: 50%;
-  position: relative;
-  height: 60%;
-  overflow: auto;
-}
-
-/* Modal styles */
-.modal-products {
+.vendor-form label, .product-form label {
   display: flex;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  text-align: left;
 }
 
-.modal-content-products {
-  background: white;
-  padding: 40px;
-  border-radius: 8px;
-  width: 50%;
-  position: relative;
-  height: 80%;
-  overflow: auto;
+.vendor-form input, .product-form input, .product-form select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-/* Modal styles */
-.modal-representative {
-  display: flex;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Ensure full overlay */
-  align-items: center;
-  justify-content: center;
+.vendor-row-button{
+  border: none !important;
 }
 
-.modal-content-representative {
-  background: white;
-  padding: 40px;
-  border-radius: 8px;
-  width: 50%;
-  position: relative;
-  height: 65%;
-  overflow-y: auto;
+.btn-save {
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
 }
 
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+  .vendor-container {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .modal-content-update, .modal-content-products, .modal-content-representative {
+    width: 70%;
+  }
+
+  .vendor-table th, .vendor-table td {
+    padding: 10px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .vendor-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .modal-content-update, .modal-content-products, .modal-content-representative {
+    width: 85%;
+  }
+
+  .vendor-row-button {
+    flex-direction: column;
+  }
+
+  .btn-view, .btn-update {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .vendor-title {
+    font-size: 20px;
+  }
+
+  .modal-content-update, .modal-content-products, .modal-content-representative {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .vendor-table th, .vendor-table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+}

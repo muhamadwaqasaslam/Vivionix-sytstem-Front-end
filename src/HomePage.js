@@ -530,7 +530,7 @@ const HomePage = () => {
             onClick={() => toggleDropdown("stock")}
           >
             <Warehouse size={14} />
-            {!isSidebarCollapsed && <span className="items">Stock</span>}
+            {!isSidebarCollapsed && <span className="items">Stock In</span>}
             {!isSidebarCollapsed && (
               <span style={{ marginLeft: "70px" }}>
                 {activeDropdown === "stock" ? (
@@ -547,13 +547,19 @@ const HomePage = () => {
                 className="sidebar-subitem"
                 onClick={() => setSelectedItem("Stock In")}
               >
-                Stock In
+                Form
               </div>
               <div
                 className="sidebar-subitem"
                 onClick={() => setSelectedItem("Vendor List")}
               >
-                Stock Out
+                Pending Approval
+              </div>
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Vendor List")}
+              >
+                Approved Stock In
               </div>
             </div>
           )}

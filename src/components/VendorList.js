@@ -120,7 +120,7 @@ const VendorTable = () => {
       {selectedVendor && modalType === "update" && (
         <div className="modal-update">
           <div className="modal-content-update">
-            <span className="close" onClick={closeModal}>&times;</span>
+          <span className="close" onClick={closeModal}>&times;</span>
             <h3>Update Vendor</h3>
             <form className="vendor-form">
                   <label>
@@ -183,7 +183,7 @@ const VendorTable = () => {
       {selectedVendor && modalType === "products" && (
         <div className="modal-products">
           <div className="modal-content-products">
-            <span className="close" onClick={closeModal}>&times;</span>
+          <span className="close" onClick={closeModal}>&times;</span>
             <h3>Product Details</h3>
             {selectedVendor.products.map((product, index) => (
                   <form key={index} className="product-form">

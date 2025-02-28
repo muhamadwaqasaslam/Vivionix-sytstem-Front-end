@@ -1,144 +1,218 @@
 /* Main Container */
 .stock-form-container {
-    display: flex;
-    flex-direction: column;
-    max-width: 97%;
-    margin: 0 auto;
-    padding: 40px;
-    font-family: Arial, sans-serif;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background: #f9f9f9;
-    margin-top: 20px;
-  }
-  
-  /* Form Title */
-  .stock-form-title {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  /* Form Sections */
-  .stock-form-section {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  /* Form Groups */
-  .stock-form-group {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .stock-form-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .stock-form-group input, 
-  .stock-form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  /* Representative Section */
-  .stock-item-title {
-    margin-top: 40px;
-    text-align: left;
-  }
-  
-  /* Table Styling */
-  .stock-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    border-bottom: 1px solid #ccc;
-  }
-  
-  .stock-item-table th{
-    background-color: #007bff;
-  }
-  
-  .stock-item-table tr{
-      background-color: #f9f9f9;
-  }
-  
-  .stock-item-table th, 
-  .stock-item-table td {
-    border: 1px solid #ccc;
-    padding: 12px;
-    text-align: center; /* Ensures headers are centered */
-    vertical-align: middle; /* Aligns content vertically */
-    width: 100px;
-  }
-  
-  /* Centering Inputs Properly */
-  .stock-table td {
-   
-    justify-content: left;  /* Horizontally center input fields */
-    align-items: left;      /* Vertically center input fields */
-    height: 50px;             /* Adjust height as needed */
-   
-  }
-  
-  /* Table Input Fields */
-  .stock-item-table td input, 
-  .stock-item-table td select {
-    width: 90%;              /* Ensures input takes most of the column width */
-    padding: 7px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    background: #fff;
-    transition: 0.3s;
-    text-align: left; /* Centers text inside input fields */
-  }
-  
-  /* Fix for File Input */
-  .stock-item-table input[type="file"] {
-    width: 100%;
-    text-align: left;
-  }
-  
-  .Stockrow-icon{
-      gap: 20px;
-  }
+  display: flex;
+  flex-direction: column;
+  max-width: 97%;
+  margin: 0 auto;
+  padding: 40px;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #f9f9f9;
+  margin-top: 20px;
+}
 
-  .stock-btn.save {
-    background-color: #ffc107;
-    color: #333;
-  }
-  .stock-btn.save:hover {
-    background-color: #e0a800;
-  }
-  
-  .stock-btn.submit {
-    background-color: #007bff;
-    color: white;
-  }
-  .stock-btn.submit:hover {
-    background-color: #0056b3;
-  }
+/* Form Title */
+.stock-form-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
+/* Form Sections */
+.stock-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Form Groups */
+.stock-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.stock-form-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.stock-form-group input, 
+.stock-form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Representative Section */
+.stock-item-title {
+  margin-top: 40px;
+  text-align: left;
+}
+
+/* Table Styling */
+.stock-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border-bottom: 1px solid #ccc;
+  overflow-x: auto;
+}
+
+.stock-item-table th{
+  background-color: #007bff;
+}
+
+.stock-item-table tr{
+    background-color: #f9f9f9;
+}
+
+.stock-item-table th, 
+.stock-item-table td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: center; /* Ensures headers are centered */
+  vertical-align: middle; /* Aligns content vertically */
+  width: 100px;
+}
+
+/* Centering Inputs Properly */
+.stock-table td {
+ 
+  justify-content: left;  /* Horizontally center input fields */
+  align-items: left;      /* Vertically center input fields */
+  height: 50px;             /* Adjust height as needed */
+ 
+}
+
+/* Table Input Fields */
+.stock-item-table td input, 
+.stock-item-table td select {
+  width: 90%;              /* Ensures input takes most of the column width */
+  padding: 7px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  background: #fff;
+  transition: 0.3s;
+  text-align: left; /* Centers text inside input fields */
+}
+
+/* Fix for File Input */
+.stock-item-table input[type="file"] {
+  width: 100%;
+  text-align: left;
+}
+
+.Stockrow-icon{
+    gap: 20px;
+}
+
+.stock-btn.save {
+  background-color: #ffc107;
+  color: #333;
+}
+.stock-btn.save:hover {
+  background-color: #e0a800;
+}
+
+.stock-btn.submit {
+  background-color: #007bff;
+  color: white;
+}
+.stock-btn.submit:hover {
+  background-color: #0056b3;
+}
+
+
+
+.plus {
+  background-color: #007bff;
+  color: white;
+  width: 50px;
+  border-radius: 3%;
   
-  
-  .plus {
-    background-color: #007bff;
-    color: white;
-    width: 50px;
-    border-radius: 3%;
-    
-   
-  }
-  .remove {
-    background-color: #007bff;
-    color: white;
-    width: 50px;
-    border-radius: 3%;
-  }
-  
-  
-  
+ 
+}
+.remove {
+  background-color: #007bff;
+  color: white;
+  width: 50px;
+  border-radius: 3%;
+}
+
+
+/* Default styles are for larger screens */
+
+/* For tablets and smaller desktops */
+@media (max-width: 1024px) {
+.stock-form-container {
+  max-width: 95%;
+  padding: 30px;
+}
+
+.stock-item-table td input, 
+.stock-item-table td select {
+  width: 85%;  /* Reduce input field width slightly */
+}
+
+.stock-item-table{
+  overflow-x: auto;
+}
+
+.stock-form-group input, 
+.stock-form-group select {
+  padding: 8px;
+}
+
+.stock-btn {
+  padding: 8px 15px;
+  font-size: 14px;
+}
+}
+
+/* Table Wrapper to enable scrolling */
+.stock-table-wrapper {
+width: 100%;
+overflow-x: auto;  /* Enables horizontal scrolling */
+}
+
+/* Ensure table doesn't overflow */
+.stock-item-table {
+width: 100%;
+border-collapse: collapse;
+min-width: 800px; /* Prevents column squeezing */
+}
+
+/* Scrollable Table for Smaller Screens */
+@media (max-width: 1024px) {
+.stock-table-wrapper {
+  max-width: 100%;
+  overflow-x: auto;
+}
+}
+
+@media (max-width: 768px) {
+.stock-table-wrapper {
+  overflow-x: auto;
+  display: block;
+}
+
+.stock-item-table th, 
+.stock-item-table td {
+  padding: 8px;
+  font-size: 14px;
+}
+}
+
+@media (max-width: 480px) {
+.stock-table-wrapper {
+  overflow-x: auto;
+}
+
+.stock-item-table th, 
+.stock-item-table td {
+  padding: 5px;
+  font-size: 12px;
+}
+}

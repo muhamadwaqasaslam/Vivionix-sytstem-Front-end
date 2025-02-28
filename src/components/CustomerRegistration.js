@@ -90,48 +90,50 @@ const CustomerForm = () => {
       </div>
 
       <h3 className="representative-title">Representatives Information</h3>
-      <table className="representative-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Title</th>
-            <th>Education Field</th>
-            <th>Designation</th>
-            <th>Contact No</th>
-            <th>Contact Email</th>
-            <th>Qualification</th>
-            <th>Customer Name</th>
-            <th>Visiting Card/CV</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {representatives.map((_, index) => (
-            <tr key={index}>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="text" /></td>
-              <td><input type="email" /></td>
-              <td><input type="text" /></td>
-              <td><select><option>Select from register</option></select></td>
-              <td><input type="file" /></td>
-              <td className="row-icon">
-                <button className="icon-button plus" onClick={addRepresentative}>
-                  <FaPlus />
-                </button>
-                {representatives.length > 1 && (
-                  <button className="icon-button remove" onClick={() => removeRepresentative(index)}>
-                    <FaMinus />
-                  </button>
-                )}
-              </td>
+      <div className="representative-table-container">
+        <table className="representative-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Title</th>
+              <th>Education Field</th>
+              <th>Designation</th>
+              <th>Contact No</th>
+              <th>Contact Email</th>
+              <th>Qualification</th>
+              <th>Customer Name</th>
+              <th>Visiting Card/CV</th>
+              <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      
+          </thead>
+          <tbody>
+            {representatives.map((_, index) => (
+              <tr key={index}>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="text" /></td>
+                <td><input type="email" /></td>
+                <td><input type="text" /></td>
+                <td><select><option>Select from register</option></select></td>
+                <td><input type="file" /></td>
+                <td className="row-icon">
+                  <button type="button" className="add-btn" onClick={addRepresentative}>
+                    <FaPlus />
+                  </button>
+                  {representatives.length > 1 && (
+                    <button type="button" className="remove-btn" onClick={() => removeRepresentative(index)}>
+                      <FaMinus />
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
       <div className="button-container">
         <button type="button" className="vendor-btn save" onClick={handleSave} disabled={isSaved}>
           Save
