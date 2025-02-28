@@ -16,7 +16,7 @@ import {
   FaShoppingCart,
 } from "react-icons/fa";
 
-import { AlignLeft, Search } from "lucide-react";
+import { AlignLeft, Search,Warehouse } from "lucide-react";
 
 import "./HomePage.css";
 import Home from "./components/Home";
@@ -53,6 +53,7 @@ import OrderForm from "./components/OrderRegistration";
 import OrderDetailForm from "./components/OrderdetailsRegistration";
 import CustomerCategoryForm from "./components/CategoryRegistration";
 import CustomerCategoryTable from "./components/CategoryTable";
+import StockForm from "./components/StockInForm";
 
 const HomePage = () => {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -163,6 +164,8 @@ const HomePage = () => {
         return <Settings />;
       case "Home":
         return <Home />;
+      case "Stock In":
+        return <StockForm />;
       default:
         return <Dashboard />;
     }
@@ -520,6 +523,41 @@ const HomePage = () => {
               </div>
             </div>
           )}
+
+           {/* Vendor Dropdown */}
+           <div
+            className="sidebar-item"
+            onClick={() => toggleDropdown("stock")}
+          >
+            <Warehouse size={14} />
+            {!isSidebarCollapsed && <span className="items">Stock</span>}
+            {!isSidebarCollapsed && (
+              <span style={{ marginLeft: "70px" }}>
+                {activeDropdown === "stock" ? (
+                  <FaChevronDown className="dropdown-icon" />
+                ) : (
+                  <FaChevronRight className="dropdown-icon" />
+                )}
+              </span>
+            )}
+          </div>
+          {!isSidebarCollapsed && activeDropdown === "stock" && (
+            <div className="sidebar-submenu">
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Stock In")}
+              >
+                Stock In
+              </div>
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Vendor List")}
+              >
+                Stock Out
+              </div>
+            </div>
+          )}
+
 
          
         </div>
