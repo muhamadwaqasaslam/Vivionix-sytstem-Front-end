@@ -1,217 +1,165 @@
-import React, { useState} from "react";
-import "./OrderForm.css";
-import { BASE_URL } from "../config";
+import React, { useState } from 'react';
+import './OrderForm.css';  
 
 const OrderForm = () => {
-  const initialOrderState = {
-    customer: "",
-    order_delivery: "",
-    GST: "",
-    registered_by_id: "",
-    orderdetails: [
-      {
-        product_name: "",
-        productquantity: "",
-      },
-    ],
- 
+  const initialProductState = {
+    productCode: '',
+    productName: '',
+    productRefNumber: '',
+    brandName: '',
+    packSize: '',
+    unitPerPack: '',
+    packPrice: '',
+    orderQuantity: '',
+    gstPercentage: '',
+    totalPrice: '',
   };
 
-  const [Order, setOrder] = useState(initialOrderState);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleProductChange = (index, e) => {
-    const { name, value } = e.target;
-    const updatedProducts = [...Order.orderdetails];
-    updatedProducts[index] = {
-      product_name: updatedProducts[index].product_name || "",
-      productquantity: updatedProducts[index].productquantity || "",
-      [name]: value, 
-    };
-    setOrder((prevState) => ({
-      ...prevState,
-      orderdetails: updatedProducts,
-    }));
-  };
-  
-
-  const addProduct = () => {
-    setOrder((prevState) => ({
-      ...prevState,
-      orderdetails: [
-        ...prevState.orderdetails,
-        { product_name: "", productquantity: "" },
-      ],
-    }));
+   // File Change Handler
+   const handleFileChange = (e) => {
+    setOrderAttachment(e.target.files[0]);
   };
 
-  const removeProduct = (index) => {
-    const updatedProducts = Order.orderdetails.filter((_, i) => i !== index);
-    setOrder((prevState) => ({
-      ...prevState,
-      orderdetails: updatedProducts,
-    }));
+  // Missing State Variables
+  const [orderNo, setOrderNo] = useState('');
+  const [orderDate, setOrderDate] = useState('');
+  const [orderDeliveryDate, setOrderDeliveryDate] = useState('');
+  const [instructions, setInstructions] = useState('');
+  const [orderAttachment, setOrderAttachment] = useState(null);
+  const [customer, setcustomer] = useState('');
+  const [CustomerList] = useState(['Customer A', 'Customer B', 'Customer C']);
+  const [products, setProducts] = useState([{ ...initialProductState, id: Date.now() }]);
+  const [isSaved, setIsSaved] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleCustomerChange = (e) => {
+    setcustomer(e.target.value);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setOrder((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+  const handleProductChange = (id, e) => {
+    const { name, value, files } = e.target;
+    setProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product.id === id ? { ...product, [name]: files ? files[0] : value } : product
+      )
+    );
   };
 
-  const handleSubmit = async (e) => {
+  const addMoreProducts = () => {
+    setProducts([...products, { ...initialProductState, id: Date.now() }]);
+  };
+
+  const removeProduct = (id) => {
+    setProducts(products.filter((product) => product.id !== id));
+  };
+
+  const handleSave = () => {
+    setIsSaved(true);
+    setIsSubmitted(false);
+    alert("Order details saved successfully!");
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    setIsSubmitting(true);
-    setErrorMessage("");
-    setSuccessMessage("");
-
-    const payload = { ...Order };
-
-    try {
-      const response = await fetch(`${BASE_URL}orders/orders/create/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Error from server:", errorData);
-        throw new Error(
-          `Error ${response.status}: ${
-            errorData.message || "Failed to Create Order"
-          }`
-        );
-      }
-
-      setSuccessMessage("Order Created successfully!");
-      resetForm();
-    } catch (error) {
-      setErrorMessage(error.message || "An unknown error occurred.");
-    } finally {
-      setIsSubmitting(false);
+    if (!isSaved) {
+      alert("Please save the form before submitting.");
+      return;
     }
-  };
-
-  const resetForm = () => {
-    setOrder(initialOrderState);
+    setIsSubmitted(true);
+    setIsSaved(false);
+    alert("Order submission successful!");
   };
 
   return (
-    <div className="Order_form-container">
-      {successMessage && (
-        <div className="success-message">{successMessage}</div>
-      )}
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
+    <div className="order-form-container">
+      <h1 className="order-heading">Order Form</h1>
+      
+      <label>Order No:</label>
+      <input type="text" value={orderNo} onChange={(e) => setOrderNo(e.target.value)} required />
 
-      <form className="form Order_registration" onSubmit={handleSubmit}>
-        <h1 className="heading">Order Form</h1>
+      <label>Order Date:</label>
+      <input type="date" value={orderDate} onChange={(e) => setOrderDate(e.target.value)} required />
 
-        <div className="input-group">
-          <label>Customer Name</label>
-          <input
-            type="text"
-            name="customer"
-            value={Order.customer}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
+      <label>Order Attachment:</label>
+      <input type="file" onChange={handleFileChange} />
 
-        <div className="input-group">
-          <label>Order Delivery (YYYY-MM-DDThh:mm:ss)</label>
-          <input
-            type="datetime-local"
-            name="order_delivery"
-            value={Order.order_delivery}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
+      <label>Customer Name:</label>
+      <input 
+        type="text" 
+        value={customer} 
+        onChange={handleCustomerChange} 
+        list="customer-list" 
+        placeholder="Search or enter Customer name" 
+        required 
+        className='Customer-search'
+      />
+      <datalist id="customer-list">
+        {CustomerList.map((v, index) => (
+          <option key={index} value={v} />
+        ))}
+      </datalist>
 
+      <label>Order Delivery Date:</label>
+      <input type="date" value={orderDeliveryDate} onChange={(e) => setOrderDeliveryDate(e.target.value)} required />
 
-        <div className="input-group">
-          <label>GST</label>
-          <input
-            type="text"
-            name="GST"
-            value={Order.GST}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
+      <label>Instructions (if any):</label>
+      <textarea value={instructions} onChange={(e) => setInstructions(e.target.value)} />
 
-        <div className="input-group">
-          <label>Register By</label>
-          <input
-            type="text"
-            name="registered_by_id"
-            value={Order.registered_by_id}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-
-        <div className="products-section">
-          <label>Order Detail</label>
-          {Order.orderdetails.map((orderdetails, index) => (
-            <div key={index} className="product-input-row">
-              <input
-                type="text"
-                name="product_name"
-                value={orderdetails.product_name}
-                onChange={(e) => handleProductChange(index, e)}
-                placeholder="Product Name"
-                required
-                className="product-input"
-              />
-              <input
-                type="number"
-                name="productquantity"
-                value={orderdetails.productquantity}
-                onChange={(e) => handleProductChange(index, e)}
-                placeholder="Product Quantity"
-                required
-                className="product-input"
-              />
-              {index === 0 ? (
-                <button
-                  type="button"
-                  onClick={addProduct}
-                  className="add-product-button"
-                  title="Add Product"
-                >
-                  ➕
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => removeProduct(index)}
-                  className="remove-product-button"
-                  title="Remove Product"
-                >
-                  ➖
-                </button>
-              )}
-            </div>
-          ))}
-        </div>
-
+      
+      <h2 order-table-heading>Product Detail</h2>
+      <div className="order-table-container">
         
+        <table className="order-table">
+          <thead>
+            <tr>
+              <th>Sr. No.</th>
+              <th>Product Code</th>
+              <th>Product Name</th>
+              <th>Product Ref #</th>
+              <th>Brand Name</th>
+              <th>Pack Size</th>
+              <th>Unit/Tests Per Pack</th>
+              <th>Pack Price</th>
+              <th>Order Quantity</th>
+              <th>GST %</th>
+              <th>Total Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product, index) => (
+              <tr key={product.id}>
+                <td>{index + 1}</td>
+                <td><input type="text" name="productCode" value={product.productCode} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="text" name="productName" value={product.productName} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="text" name="productRefNumber" value={product.productRefNumber} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="text" name="brandName" value={product.brandName} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="number" name="packSize" value={product.packSize} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="number" name="unitPerPack" value={product.unitPerPack} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="number" name="packPrice" value={product.packPrice} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="number" name="orderQuantity" value={product.orderQuantity} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="text" name="gstPercentage" value={product.gstPercentage} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="text" name="totalPrice" value={product.totalPrice} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td>
+                  <button type="button" className="add-btn" onClick={addMoreProducts}>+</button>
+                  {products.length > 1 && (
+                    <button type="button" className="remove-btn" onClick={() => removeProduct(product.id)}>-</button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-        <div className="submit-container">
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Submit"}
-          </button>
-        </div>
-      </form>
+      <div className="order-button-container">
+        <button type="button" className="order-btn save" onClick={handleSave} disabled={isSaved}>
+          Save
+        </button>
+        <button type="submit" className="order-btn submit" onClick={handleSubmit} disabled={!isSaved || isSubmitted}>
+          Submit
+        </button>
+      </div>
     </div>
   );
 };

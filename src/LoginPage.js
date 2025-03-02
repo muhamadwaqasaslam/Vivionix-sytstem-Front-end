@@ -1,180 +1,88 @@
 import React, { useState } from "react";
-import axios from "axios";
-import {
-  TextField,
-  Button,
-  Box,
-  Typography,
-  IconButton,
-  InputAdornment,
-} from "@mui/material";
-import GoogleIcon from "@mui/icons-material/Google";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
-import logo from "./logo.png";
 import "./LoginPage.css";
-import { BASE_URL } from "./config";
+import backgroundImage from "./image.png";
+import logo from "./logo.png";
 
 const LoginPage = () => {
-  const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [apiError, setApiError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleLogin = async () => {
-    if (!validateEmail(email)) {
-      setEmailError("Invalid email format");
-      return;
-    }
-    if (!validatePassword(password)) {
-      setPasswordError("Password must be at least 4 characters");
-      return;
-    }
-
-    setIsLoading(true);
-    setApiError("");
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+    
     try {
-      const response = await axios.post(`${BASE_URL}employee/login/`, {
-        email,
-        password,
+      const response = await fetch("https://my.vivionix.com/employee/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
       });
 
-      if (response.status === 200 && response.data) {
-        const { message, access } = response.data; // Adjust based on actual response structure
-        if (message === "Login successful" && access) {
-          localStorage.setItem("authToken", access);
-          navigate("/home");
-        } else {
-          setApiError("Invalid credentials. Please try again.");
-        }
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
       }
-    } catch (error) {
-      setApiError(
-        error.response?.data?.message ||
-          "Login failed. Please check your credentials and try again."
-      );
-    } finally {
-      setIsLoading(false);
+
+      localStorage.setItem("token", data.token);
+      alert("Login Successful!");
+      window.location.href = "/home"; // Redirect after login
+    } catch (err) {
+      setError(err.message);
     }
   };
 
-  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-  const validatePassword = (password) => password.length >= 4; // Allow minimum length of 4 characters
-
-  const handleClickShowPassword = () => setShowPassword(!showPassword);
-
   return (
-    <Box className="login-container">
-      <Box className="login-box">
-        <Box className="logo-container">
-          <img src={logo} alt="Vivionix Logo" className="logo" />
-          <Typography variant="h5" color="primary" className="company-name">
-            Vivionix
-          </Typography>
-        </Box>
-        <Typography variant="h4" className="page-title">
-          Login Page
-        </Typography>
+    <div className="login-container">
+      {/* Left Side - Background Image */}
+      <div className="background-container">
+        <div
+          className="login-image"
+          style={{ backgroundImage: `url(${backgroundImage})` }}
+        ></div>
+      </div>
 
-        {apiError && (
-          <Typography color="error" textAlign="center" mb={2}>
-            {apiError}
-          </Typography>
-        )}
-
-        <TextField
-          fullWidth
-          label="Email ID"
-          variant="outlined"
-          margin="normal"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            setEmailError("");
-          }}
-          error={!!emailError}
-          helperText={emailError}
-          className="text_field"
-          
-        />
-
-        <Box mb={2}>
-          <TextField
-            fullWidth
-            label="Password"
-            type={showPassword ? "text" : "password"}
-            variant="outlined"
-            margin="normal"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setPasswordError("");
-            }}
-            error={!!passwordError}
-            helperText={passwordError}
-            className="text-field"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={handleClickShowPassword} edge="end">
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Box>
-
-        <Button
-          variant="contained"
-          color="primary"
-          className="sign-in-button"
-          onClick={handleLogin}
-          disabled={isLoading}
-        >
-          {isLoading ? "Signing In..." : "Sign In"}
-        </Button>
-
-        <Typography variant="body2" textAlign="center" mb={1}>
-          <a href="/forgotpassword" className="link">
-            Forgot password?
-          </a>
-        </Typography>
-
-        <Typography variant="body2" textAlign="center" mb={1}>
-          If you forgot your password then you can
-          <a href="/forgotpassword" className="link">
-            Change password?
-          </a>
-        </Typography>
-
-        <Typography variant="body2" textAlign="center" mb={3}>
-          Don't have an account?{" "}
-          <a href="/signup" className="link">
-            Create now
-          </a>
-        </Typography>
-
-        <Box className="login-with-google">
-          <Typography variant="body2" mb={2}>
-            or Login with
-          </Typography>
-          <Button
-            variant="outlined"
-            startIcon={<GoogleIcon />}
-            className="google-button"
-          >
-            Sign in with Google
-          </Button>
-        </Box>
-      </Box>
-    </Box>
+      {/* Right Side - Login Form */}
+      <div className="Login-form-container">
+        <div className="Login-logo">
+          <img src={logo} alt="Logo" className="logo" />
+          <h3 className="company-Name">Vivionix</h3>
+        </div>
+        <div className="login-form">
+          <h3>Welcome back!</h3>
+          <h4>Please sign in to continue with Vivionix.</h4>
+          {error && <p className="error-message">{error}</p>}
+          <form onSubmit={handleLogin}>
+            <label>Email</label>
+            <input
+              type="email"
+              placeholder="info@vivionix.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <label>Password</label>
+            <input
+              type="password"
+              placeholder="********"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button className="login-submit-button" type="submit">Sign In</button>
+          </form>
+          <div className="aonther-site">
+            <a href="/forget-password">Forgot password?</a>
+            <p className="create-account">
+              Don't have an account? <a href="/sign-up">Create an Account</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

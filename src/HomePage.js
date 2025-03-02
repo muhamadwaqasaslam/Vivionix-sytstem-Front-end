@@ -490,9 +490,9 @@ const HomePage = () => {
           {/* Order Dropdown */}
           <div className="sidebar-item" onClick={() => toggleDropdown("Form")}>
             <FaShoppingCart size={14} />
-            {!isSidebarCollapsed && <span className="items">Order</span>}
+            {!isSidebarCollapsed && <span className="items">Order Management</span>}
             {!isSidebarCollapsed && (
-              <span style={{ marginLeft: "70px" }}>
+              <span >
                 {activeDropdown === "Form" ? (
                   <FaChevronDown className="dropdown-icon" />
                 ) : (
@@ -505,21 +505,33 @@ const HomePage = () => {
             <div className="sidebar-submenu">
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Order Registration")}
+                onClick={() => setSelectedItem("order Registration")}
               >
-                Order Registration
-              </div>
-              <div
-                className="sidebar-subitem"
-                onClick={() => setSelectedItem("Order Details Registration")}
-              >
-                Order Detail Registration
+                Register Order
               </div>
               <div
                 className="sidebar-subitem"
                 onClick={() => setSelectedItem("Pending")}
               >
-                Order List
+                Saved Order
+              </div>
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Pending")}
+              >
+                Pending Approval
+              </div>
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Pending")}
+              >
+                Approved/ Accepted Orders
+              </div>
+              <div
+                className="sidebar-subitem"
+                onClick={() => setSelectedItem("Pending")}
+              >
+                Outstanding Orders
               </div>
             </div>
           )}
@@ -551,13 +563,13 @@ const HomePage = () => {
               </div>
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Vendor List")}
+                onClick={() => setSelectedItem("Pending")}
               >
                 Pending Approval
               </div>
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Vendor List")}
+                onClick={() => setSelectedItem("Pending")}
               >
                 Approved Stock In
               </div>
