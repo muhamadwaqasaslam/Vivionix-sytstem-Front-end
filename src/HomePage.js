@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   FaHome,
   FaTachometerAlt,
@@ -64,7 +64,7 @@ import SavedOrder from "./components/SavedOrder";
 const HomePage = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [currentTime, setCurrentTime] = useState(new Date());
+
   const [activeDropdown, setActiveDropdown] = useState(null);
 
   const toggleDropdown = (dropdown) => {
@@ -73,12 +73,7 @@ const HomePage = () => {
     );
   };
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+
 
   const toggleUserDropdown = () => {
     setDropdownOpen(!dropdownOpen);
