@@ -4,7 +4,6 @@ import {
   FaTachometerAlt,
   FaBox,
   FaUserTie,
-  FaCaretDown,
   FaUserCircle,
   FaSignOutAlt,
   FaBuilding,
@@ -14,9 +13,15 @@ import {
   FaUser,
   FaStore,
   FaShoppingCart,
+  FaEnvelope,
+  FaBell,
+  FaExpand,
+  FaInbox,
+  FaEdit,
+  FaCogs,
 } from "react-icons/fa";
 
-import { AlignLeft, Search,Warehouse } from "lucide-react";
+import { AlignLeft, Search, Warehouse } from "lucide-react";
 
 import "./HomePage.css";
 import Home from "./components/Home";
@@ -49,11 +54,12 @@ import DepartmentForm from "./components/DepartmentRegistration";
 import DepartmentTable from "./components/DepartmentTable";
 import RoleForm from "./components/RoleRegistration";
 import RoleTable from "./components/RoleTable";
-import OrderForm from "./components/OrderRegistration";
+import OrderRegistaration from "./components/OrderRegistration";
 import OrderDetailForm from "./components/OrderdetailsRegistration";
 import CustomerCategoryForm from "./components/CategoryRegistration";
 import CustomerCategoryTable from "./components/CategoryTable";
 import StockForm from "./components/StockInForm";
+import SavedOrder from "./components/SavedOrder";
 
 const HomePage = () => {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -81,7 +87,6 @@ const HomePage = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
 
-
   const toggleSidebar = () => {
     if (window.innerWidth <= 768) {
       setIsSidebarVisible((prev) => !prev);
@@ -89,12 +94,30 @@ const HomePage = () => {
       setIsSidebarCollapsed((prev) => !prev);
     }
   };
-  
-  
 
   const handleMouseEnter = () => {
     setIsSidebarCollapsed(false);
   };
+
+  const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState("us"); // Default country
+  const [selectedCountryIcon, setSelectedCountryIcon] = useState("🇺🇸"); // Default icon
+
+  const handleCountrySelect = (country, icon) => {
+    setSelectedCountry(country);
+    setSelectedCountryIcon(icon);
+    setCountryDropdownOpen(false); // Close dropdown after selection
+  };
+
+  const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  };
+
+ 
 
   const renderContent = () => {
     switch (selectedItem) {
@@ -147,9 +170,12 @@ const HomePage = () => {
       case "Product List":
         return <ProductTable />;
       case "order Registration":
-        return <OrderForm />;
+        return <OrderRegistaration />;
       case "Order Details Registration":
         return <OrderDetailForm />;
+      case "Saved Order Details":
+        return <SavedOrder />;
+    
       case "Pending":
         return <Pending />;
       case "Outstanding":
@@ -173,36 +199,56 @@ const HomePage = () => {
 
   const [searchValue, setSearchValue] = useState("");
 
+  const handleMenuItemClick = (item) => {
+    setSelectedItem(item);
+    if (window.innerWidth <= 768) {
+      setIsSidebarVisible(false);
+    }
+  };
+
   return (
     <div
-  className={`homepage-container ${isSidebarCollapsed ? "collapsed" : ""} ${
-    isSidebarVisible ? "sidebar-open" : ""
-  }`}
->
+      className={`homepage-container ${isSidebarCollapsed ? "collapsed" : ""} ${
+        isSidebarVisible ? "sidebar-open" : ""
+      }`}
+    >
       {/* Sidebar */}
-      <div className={`sidebar ${isSidebarCollapsed ? "collapsed" : ""} ${isSidebarVisible ? "show" : ""}`} onMouseEnter={handleMouseEnter}>
+      <div
+        className={`sidebar ${isSidebarCollapsed ? "collapsed" : ""} ${
+          isSidebarVisible ? "show" : ""
+        }`}
+        onMouseEnter={handleMouseEnter}
+      >
         <div className="sidebar-header">
           <a href="/home">
             {" "}
             <img src={logo} alt="Logo" className="logo" />
             {!isSidebarCollapsed && <h2>Vivionix</h2>}
           </a>
+        
         </div>
+        
+
+
         <div className="sidebar-content">
-        {!isSidebarCollapsed &&  <h4 className="main-items">MAIN</h4>}
-          <div className="sidebar-item" onClick={() => setSelectedItem("Home")}>
-            <FaHome size={14} />{" "}
-            {!isSidebarCollapsed && <span className="items">Home</span>}
-          </div>
+          {!isSidebarCollapsed && <h4 className="main-items">MAIN</h4>}
           <div
             className="sidebar-item"
-            onClick={() => setSelectedItem("Dashboard")}
+            onClick={() => handleMenuItemClick("Home")}
           >
-            <FaTachometerAlt size={14} />{" "}
+            <FaHome size={14} />
+            {!isSidebarCollapsed && <span className="items">Home</span>}
+          </div>
+
+          <div
+            className="sidebar-item"
+            onClick={() => handleMenuItemClick("Dashboard")}
+          >
+            <FaTachometerAlt size={14} />
             {!isSidebarCollapsed && <span className="items">Dashboard</span>}
           </div>
 
-          {!isSidebarCollapsed &&  <h4 className="main-items">GENERAL</h4>}
+          {!isSidebarCollapsed && <h4 className="main-items">GENERAL</h4>}
 
           {/* Employee Dropdown */}
           <div
@@ -226,13 +272,13 @@ const HomePage = () => {
             <div className="sidebar-submenu">
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Employee Registration")}
+                onClick={() => handleMenuItemClick("Employee Registration")}
               >
                 Employee Registration
               </div>
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Employee Table")}
+                onClick={() => handleMenuItemClick("Employee Table")}
               >
                 Employees List
               </div>
@@ -263,13 +309,13 @@ const HomePage = () => {
             <div className="sidebar-submenu">
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("CustomerCategory Form")}
+                onClick={() => handleMenuItemClick("CustomerCategory Form")}
               >
                 Category Registration
               </div>
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Customer Category Table")}
+                onClick={() => handleMenuItemClick("Customer Category Table")}
               >
                 Category List
               </div>
@@ -297,13 +343,13 @@ const HomePage = () => {
             <div className="sidebar-submenu">
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Department Registration")}
+                onClick={() => handleMenuItemClick("Department Registration")}
               >
                 Department Registration
               </div>
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Department Table")}
+                onClick={() => handleMenuItemClick("Department Table")}
               >
                 Department Table
               </div>
@@ -328,20 +374,18 @@ const HomePage = () => {
             <div className="sidebar-submenu">
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Role Registration")}
+                onClick={() => handleMenuItemClick("Role Registration")}
               >
                 Role Registration
               </div>
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Role Table")}
+                onClick={() => handleMenuItemClick("Role Table")}
               >
                 Role Table
               </div>
             </div>
           )}
-
-          
 
           {/* Vendor Dropdown */}
           <div
@@ -364,13 +408,13 @@ const HomePage = () => {
             <div className="sidebar-submenu">
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("vendor Registration")}
+                onClick={() => handleMenuItemClick("vendor Registration")}
               >
                 Vendor Registration
               </div>
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Vendor List")}
+                onClick={() => handleMenuItemClick("Vendor List")}
               >
                 Vendor List
               </div>
@@ -400,19 +444,19 @@ const HomePage = () => {
             <div className="sidebar-submenu">
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Vendor Representative Form")}
+                onClick={() => handleMenuItemClick("Vendor Representative Form")}
               >
                 Vendor Representative Registration
               </div>
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Vendor Representative List")}
+                onClick={() => handleMenuItemClick("Vendor Representative List")}
               >
                 Vendor Representative List
               </div>
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Customer Representative Form")}
+                onClick={() => handleMenuItemClick("Customer Representative Form")}
               >
                 Customer Representative Registration
               </div>
@@ -440,13 +484,13 @@ const HomePage = () => {
             <div className="sidebar-submenu">
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Customer Contact Form")}
+                onClick={() => handleMenuItemClick("Customer Contact Form")}
               >
                 Customer Registration
               </div>
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Customer Table")}
+                onClick={() => handleMenuItemClick("Customer Table")}
               >
                 Customer List
               </div>
@@ -474,13 +518,13 @@ const HomePage = () => {
             <div className="sidebar-submenu">
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Product Form")}
+                onClick={() => handleMenuItemClick("Product Form")}
               >
                 Product Registration
               </div>
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Product List")}
+                onClick={() => handleMenuItemClick("Product List")}
               >
                 Product List
               </div>
@@ -505,31 +549,31 @@ const HomePage = () => {
             <div className="sidebar-submenu">
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("order Registration")}
+                onClick={() => handleMenuItemClick("order Registration")}
               >
                 Register Order
               </div>
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Pending")}
+                onClick={() => handleMenuItemClick("Saved Order Details")}
               >
                 Saved Order
               </div>
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Pending")}
+                onClick={() => handleMenuItemClick("Pending")}
               >
                 Pending Approval
               </div>
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Pending")}
+                onClick={() => handleMenuItemClick("Pending")}
               >
                 Approved/ Accepted Orders
               </div>
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Pending")}
+                onClick={() => handleMenuItemClick("Pending")}
               >
                 Outstanding Orders
               </div>
@@ -537,10 +581,7 @@ const HomePage = () => {
           )}
 
            {/* Vendor Dropdown */}
-           <div
-            className="sidebar-item"
-            onClick={() => toggleDropdown("stock")}
-          >
+          <div className="sidebar-item" onClick={() => toggleDropdown("stock")}>
             <Warehouse size={14} />
             {!isSidebarCollapsed && <span className="items">Stock In</span>}
             {!isSidebarCollapsed && (
@@ -557,35 +598,35 @@ const HomePage = () => {
             <div className="sidebar-submenu">
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Stock In")}
+                onClick={() => handleMenuItemClick("Stock In")}
               >
                 Form
               </div>
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Pending")}
+                onClick={() => handleMenuItemClick("Vendor List")}
               >
                 Pending Approval
               </div>
               <div
                 className="sidebar-subitem"
-                onClick={() => setSelectedItem("Pending")}
+                onClick={() => handleMenuItemClick("Vendor List")}
               >
                 Approved Stock In
               </div>
             </div>
           )}
-
-
-         
         </div>
       </div>
 
       <div className={`main-content ${isSidebarVisible ? "overlay" : ""}`}>
-      <nav className={`navbar ${isSidebarCollapsed ? "collapsed-navbar" : ""}`}>
+        <nav
+          className={`navbar ${isSidebarCollapsed ? "collapsed-navbar" : ""}`}
+        >
           <div className="navbar-left">
+            <img src={logo} alt="Logo" className="navbar-logo" />
             <div>
-              <button  className="leftalign">
+              <button className="leftalign">
                 <AlignLeft size={20} onClick={toggleSidebar} />
               </button>
             </div>
@@ -604,45 +645,111 @@ const HomePage = () => {
             </div>
           </div>
           <div className="navbar-right">
-            <div className="navbar-item" onClick={() => {}}>
-              Pricing
+            {/* Country Dropdown */}
+            <div className={`navbar-item dropdown country-${selectedCountry}`}>
+              <button
+                className="dropdown-toggle country-button"
+                onClick={() => setCountryDropdownOpen(!countryDropdownOpen)}
+              >
+                <span className="country-icon">{selectedCountryIcon}</span>
+              </button>
+
+              {countryDropdownOpen && (
+                <div className="country-dropdown-menu">
+                  <div
+                    className="country-dropdown-item"
+                    onClick={() => handleCountrySelect("us", "🇺🇸")}
+                  >
+                    <span className="country-icon">🇺🇸</span> USA
+                  </div>
+                  <div
+                    className="country-dropdown-item"
+                    onClick={() => handleCountrySelect("uk", "🇬🇧")}
+                  >
+                    <span className="country-icon">🇬🇧</span> UK
+                  </div>
+                  <div
+                    className="country-dropdown-item"
+                    onClick={() => handleCountrySelect("fr", "🇫🇷")}
+                  >
+                    <span className="country-icon">🇫🇷</span> French
+                  </div>
+                  <div
+                    className="country-dropdown-item"
+                    onClick={() => handleCountrySelect("de", "🇩🇪")}
+                  >
+                    <span className="country-icon">🇩🇪</span> German
+                  </div>
+                </div>
+              )}
             </div>
-            <div className="navbar-item" onClick={() => {}}>
-              Support
+
+
+            {/* Message Icon */}
+            <div className="navbar-item">
+              <FaEnvelope size={15} />
             </div>
-            <div className="navbar-item" onClick={() => {}}>
-              Services
+
+            {/* Notification Icon */}
+            <div className="navbar-item">
+              <FaBell size={15} />
             </div>
+
+            {/* Large Screen Mode */}
+            <div className="navbar-item" onClick={toggleFullScreen}>
+              <FaExpand className="large-screen" size={15} />
+            </div>
+
+            {/* Session Details */}
             <div className="session-details" onClick={toggleUserDropdown}>
-              <FaUserCircle size={24} />
-              <FaCaretDown />
+              <FaUserCircle size={18} />
+             
             </div>
-          </div>
+          
+
           {dropdownOpen && (
-            <div className="dropdown-menu">
-              <div
-                className="dropdown-item"
-                onClick={() => setSelectedItem("Account Settings")}
-              >
-                Account Settings
+            <div className="dropdown-menu session-dropdown">
+              <div className="dropdown-item person">
+                 <p className="person-name">Petey Cruiser
+                 <p className="designation">Premium Member</p></p>
               </div>
-              <div
-                className="dropdown-item"
-                onClick={() => setSelectedItem("My Orders")}
-              >
-                My Orders
+              
+
+
+              
+
+              <div className="dropdown-session-item">
+                <FaUser className="dropdown-session-icon" /> Profile
               </div>
-              <div className="dropdown-separator"></div>
-              <div className="dropdown-item">Public snippets</div>
-              <div className="dropdown-item">Private snippets</div>
-              <div className="dropdown-separator"></div>
-              <div className="dropdown-item">
-                <FaSignOutAlt /> Sign Out
+              <div className="dropdown-session-item">
+                <FaEdit className="dropdown-session-icon" /> Edit Profile
+              </div>
+
+             
+
+              <div className="dropdown-session-item">
+                <FaInbox className="dropdown-session-icon" /> Inbox
+              </div>
+              <div className="dropdown-session-item">
+                <FaEnvelope className="dropdown-session-icon" /> Messages
+              </div>
+
+             
+
+              <div className="dropdown-session-item">
+                <FaCogs className="dropdown-session-icon" /> Account Settings
+              </div>
+
+          
+
+              <div className="dropdown-session-item logout">
+                <FaSignOutAlt className="dropdown-session-icon" /> Sign Out
               </div>
             </div>
           )}
+          </div>
         </nav>
-        <div className="content">{renderContent()}</div>
+        <div className="content">{renderContent()}  </div>
       </div>
     </div>
   );

@@ -1,0 +1,195 @@
+/* General container styles */
+.ordersaved-container {
+    width: 97%;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    margin-top: 20px;
+    overflow-x: auto;
+  }
+  
+  /* Title */
+  .ordersaved-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  
+  /* Table Styles */
+  .ordersaved-table {
+    width: 100%;
+   
+    background: white;
+    border-radius: 8px;
+   
+  }
+  
+  
+  
+  
+  .ordersaved-table th, .ordersaved-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+   
+  }
+  
+  .ordersaved-table th {
+    background: #007bff;
+    color: white;
+  
+  
+  }
+  
+  .ordersaved-table td a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .ordersaved-table td a:hover {
+    text-decoration: underline;
+  }
+
+
+  .ordersaved-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.ordersaved-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: #61a7f1;
+    transition: background 0.3s ease;
+    width: 100px;
+}
+
+.filter-button:hover {
+    background-color: #0056b3;
+}
+
+
+
+/* Modal styles */
+.modal-order {
+    display: flex;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content-order {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 800px;
+    position: relative;
+    overflow: auto;
+    height: 700px;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+h3 {
+    text-align: center;
+}
+
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+    .order-container {
+      width: 100%;
+      padding: 10px;
+    }
+  
+    .modal-content-order{
+      width: 70%;
+    }
+  
+    .ordersaved-table th, .ordersaved-table td {
+      padding: 10px;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .ordersaved-table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+  
+    .modal-content-order {
+      width: 85%;
+    }
+  
+  }
+  
+  @media screen and (max-width: 480px) {
+    .ordersaved-title {
+      font-size: 20px;
+    }
+  
+    .modal-content-order {
+      width: 80%;
+      padding: 15px;
+      height: 500px;
+    }
+  
+    .ordersaved-table th, .ordersaved-table td {
+      font-size: 12px;
+      padding: 8px;
+    }
+    .modal-order-form{
+        width: 100%;
+       padding-right: 20px;
+
+    }
+
+    .model-order-input{
+        width: 90% !important;
+    }
+    .filter-button{
+        width: 50px;
+        font-size: 9px;
+        margin-left: 5px;
+     
+    }
+    .ordersaved-title{
+        font-size: 13px;
+    }
+    .ordersaved-buttons {
+        
+        gap: 1px;
+    }
+    .filter-button {
+        padding: 6px 8px;
+    }
+  }
+  
