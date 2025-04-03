@@ -1,41 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./VendorTable.css";
 
 const VendorTable = () => {
-  const [vendors, setVendors] = useState([
-    {
-      id: "VRF123",
-      registrationDate: "2024-01-15",
-      name: "ABC Supplies",
-      address: "123 Market Street, NY",
-      website: "https://abc-supplies.com",
-      type: "Manufacturer",
-      representative: {
-        name: "John Doe",
-        designation: "Sales Manager",
-        email: "johndoe@example.com",
-        officePhone: "+1 234 567 890",
-        personalPhone: "+1 987 654 321",
-        address: "456 Business Ave, NY",
-      },
-      products: [
-        {
-          id: "P12345",
-          name: "Product A",
-          refNo: "CAT123",
-          brand: "BrandX",
-          packSize: "10 units",
-          unitPerPack: "1",
-          certifications: "ISO 9001",
-          category: "Equipment",
-        },
-      ],
-    },
-  ]);
-
+  const [vendors, setVendors] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedVendor, setSelectedVendor] = useState(null);
   const [modalType, setModalType] = useState(null);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [formData, setFormData] = useState({});
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value.toLowerCase());
@@ -43,38 +15,78 @@ const VendorTable = () => {
 
   const filteredVendors = vendors.filter((vendor) => {
     return (
-      Object.values(vendor).some(value =>
-        typeof value === "string" && value.toLowerCase().includes(search)
+      Object.values(vendor).some(
+        (value) =>
+          typeof value === "string" && value.toLowerCase().includes(search)
       ) ||
-      Object.values(vendor.representative).some(value =>
-        typeof value === "string" && value.toLowerCase().includes(search)
+      Object.values(vendor.representative).some(
+        (value) =>
+          typeof value === "string" && value.toLowerCase().includes(search)
       )
     );
   });
 
+  useEffect(() => {
+    fetch("https://my.vivionix.com/vendors/list_all/")
+      .then((response) => response.json())
+      .then((data) => setVendors(data))
+      .catch((error) => console.error("Error fetching vendors:", error));
+  }, []);
+
+  const handleSubmitUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`https://my.vivionix.com/vendors/update/${selectedVendor.vendor_id}/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update vendor");
+      }
+
+      setVendors((prev) =>
+        prev.map((vendor) =>
+          vendor.vendor_id === selectedVendor.vendor_id
+            ? { ...vendor, ...formData }
+            : vendor
+        )
+      );
+      closeModal();
+    } catch (error) {
+      console.error("Error updating vendor:", error);
+    }
+  };
+
+
   const openModal = (vendor, type) => {
     setSelectedVendor({ ...vendor });
     setModalType(type);
+    
+    if (type === "update") {
+      setShowUpdateModal(true); 
+      setFormData({ ...vendor }); 
+    }
   };
+  
 
   const closeModal = () => {
     setSelectedVendor(null);
     setModalType(null);
+    setShowUpdateModal(false); 
   };
+  
 
-  const handleVendorChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setSelectedVendor((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const updateVendor = () => {
-    setVendors((prev) =>
-      prev.map((vendor) =>
-        vendor.id === selectedVendor.id ? selectedVendor : vendor
-      )
-    );
-    closeModal();
-  };
+
+
 
   return (
     <div className="vendor-container">
@@ -83,225 +95,193 @@ const VendorTable = () => {
         <thead>
           <tr>
             <th>Vendor ID</th>
-            <th>Registration Date</th>
             <th>Vendor Name</th>
-            <th>Address</th>
-            <th>Website</th>
+            <th>Company Email</th>
             <th>Type</th>
-            <th>Representative</th>
-            <th>Actions</th>
+            <th>Website</th>
+            <th>Company Phone</th>
+            <th className="vendor-list-address">Address</th>
+            <th>Is Vendor</th>
+            <th>Contract Start Date</th>
+            <th>Registered By</th>
+            <th>Product Catalog</th>
+            <th>Action</th>
+          </tr>
+          <tr>
+            {[
+              "id",
+              "name",
+              "dateRegistered",
+              "address",
+              "isVendor",
+              "contarct-start-date",
+              "registeredby",
+              "website",
+              "type",
+              "email",
+              "contactNumber",
+            ].map((key) => (
+              <th key={key}>
+                <input
+                  type="text"
+                  placeholder="Search"
+                  onChange={(e) => handleSearchChange(e, key)}
+                />
+              </th>
+            ))}
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {filteredVendors.map((vendor) => (
             <tr key={vendor.id}>
-              <td>{vendor.id}</td>
-              <td>{vendor.registrationDate}</td>
-              <td>{vendor.name}</td>
-              <td>{vendor.address}</td>
+              <td>{vendor.vendor_id ?? "null"}</td>
+              <td>{vendor.vendorname ?? "null"}</td>
+              <td>{vendor.company_email ?? "null"}</td>
+              <td>{vendor.type ?? "null"}</td>
               <td>
-                <a href={vendor.website} target="_blank" rel="noopener noreferrer">{vendor.website}</a>
+                {vendor.website ? (
+                  <a
+                    href={vendor.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {vendor.website}
+                  </a>
+                ) : (
+                  "null"
+                )}
               </td>
-              <td>{vendor.type}</td>
-              <td>
-                <a href="#" onClick={() => openModal(vendor, "representative")}>
-                  {vendor.representative.name}
-                </a>
-              </td>
+              <td>{vendor.company_phone_number ?? "null"}</td>
+              <td className="vendor-address">{vendor.address ?? "null"}</td>
+              <td>{vendor.is_vendor ? "Yes" : "No"}</td>
+              <td>{vendor.contract_start_date ?? "null"}</td>
+              <td>{vendor.registered_by ?? "null"}</td>
+              <td>{vendor.productcatalog ?? "null"}</td>
               <td className="vendor-row-button">
-                <button className="btn-view" onClick={() => openModal(vendor, "products")}>View Products</button>
-                <button className="btn-update" onClick={() => openModal(vendor, "update")}>Update Vendor</button>
+                <button
+                  className="btn-update"
+                  onClick={() => openModal(vendor, "update")}
+                >
+                  Update Vendor
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {selectedVendor && modalType === "update" && (
-        <div className="modal-update">
-          <div className="modal-content-update">
-          <span className="close" onClick={closeModal}>&times;</span>
-            <h3>Update Vendor</h3>
-            <form className="vendor-form">
-                  <label>
-                    Vendor Name:
-                    <input
-                      type="text"
-                      name="name"
-                      value={selectedVendor.name}
-                      onChange={handleVendorChange}
-                    />
-                  </label>
-                  <label>
-                    Address:
-                    <input
-                      type="text"
-                      name="address"
-                      value={selectedVendor.address}
-                      onChange={handleVendorChange}
-                    />
-                  </label>
-                  <label>
-                    Website:
-                    <input
-                      type="text"
-                      name="website"
-                      value={selectedVendor.website}
-                      onChange={handleVendorChange}
-                    />
-                  </label>
-                  <label>
-                    Type:
-                    <input
-                      type="text"
-                      name="type"
-                      value={selectedVendor.type}
-                      onChange={handleVendorChange}
-                    />
-                  </label>
-                  <label>
-                    Representative:
-                    <input
-                      type="text"
-                      name="representative"
-                      value={selectedVendor.representative}
-                      onChange={handleVendorChange}
-                    />
-                  </label>
-                  <button
-                    type="button"
-                    className="btn-save"
-                    onClick={updateVendor}
-                  >
-                    Save Changes
-                  </button>
-                </form>
-          </div>
+      {showUpdateModal && selectedVendor && (
+  <div className="vendor-update-modal">
+    <div className="vendor-update-modal-content">
+      <h3>Update Vendor</h3>
+      <form onSubmit={handleSubmitUpdate}>
+        <div className="form-group">
+          <label>Vendor Name</label>
+          <input
+            name="vendorname"
+            value={formData.vendorname || ""}
+            onChange={handleInputChange}
+          />
         </div>
-      )}
+        <div className="form-group">
+          <label>Company Email</label>
+          <input
+            type="email"
+            name="company_email"
+            value={formData.company_email || ""}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form-group">
+          <label>Company Phone</label>
+          <input
+            name="company_phone_number"
+            value={formData.company_phone_number || ""}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form-group">
+          <label>Address</label>
+          <input
+            name="address"
+            value={formData.address || ""}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form-group">
+          <label>Website</label>
+          <input
+            name="website"
+            value={formData.website || ""}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form-group">
+          <label>Type</label>
+          <select
+            name="type"
+            value={formData.type || ""}
+            onChange={handleInputChange}
+          >
+            <option value="Manufacturer">Manufacturer</option>
+            <option value="Distributor">Distributor</option>
+            <option value="Supplier">Supplier</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label>Contract Start Date</label>
+          <input
+            type="date"
+            name="contract_start_date"
+            value={formData.contract_start_date || ""}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form-group">
+          <label>Registered By</label>
+          <input
+            name="registered_by"
+            value={formData.registered_by || ""}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form-group">
+          <label>Is Vendor</label>
+          <select
+            name="is_vendor"
+            value={formData.is_vendor || ""}
+            onChange={handleInputChange}
+          >
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label>Product Catalog</label>
+          <input
+            name="productcatalog"
+            value={formData.productcatalog || "null"}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="modal-button-container">
+          <button
+            className="modal-close-button"
+            onClick={() => setShowUpdateModal(false)}
+          >
+            Close
+          </button>
+          <button className="modal-button" >Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
 
-      {selectedVendor && modalType === "products" && (
-        <div className="modal-products">
-          <div className="modal-content-products">
-          <span className="close" onClick={closeModal}>&times;</span>
-            <h3>Product Details</h3>
-            {selectedVendor.products.map((product, index) => (
-                  <form key={index} className="product-form">
-                    <label>
-                      Sr. No.: <input type="text" value={index + 1} disabled />
-                    </label>
-                    <label>
-                      Product Registration Date:{" "}
-                      <input
-                        type="text"
-                        value={selectedVendor.registrationDate}
-                        disabled
-                      />
-                    </label>
-                    <label>
-                      Name: <input type="text" value={product.name} disabled />
-                    </label>
-                    <label>
-                      Ref No/ Cat No:{" "}
-                      <input type="text" value={product.refNo} disabled />
-                    </label>
-                    <label>
-                      Brand Name:{" "}
-                      <input type="text" value={product.brand} disabled />
-                    </label>
-                    <label>
-                      Pack Size:{" "}
-                      <input type="text" value={product.packSize} disabled />
-                    </label>
-                    <label>
-                      Unit/Tests Per Pack:{" "}
-                      <input type="text" value={product.unitPerPack} disabled />
-                    </label>
-                    <label>
-                      Quality Certifications:{" "}
-                      <input
-                        type="text"
-                        value={product.certifications}
-                        disabled
-                      />
-                    </label>
-                    <label>
-                      Product Category:
-                      <select value={product.category} disabled>
-                        <option>Equipment</option>
-                        <option>Chemical</option>
-                        <option>Consumable Device</option>
-                      </select>
-                    </label>
-                    <label>
-                      Product ID:{" "}
-                      <input type="text" value={product.id} disabled />
-                    </label>
-                  </form>
-                ))}
-              </div>
-            
-        </div>
-      )}
 
-      {selectedVendor && modalType === "representative" && (
-        <div className="modal-representative">
-          <div className="modal-content-representative">
-            <span className="close" onClick={closeModal}>&times;</span>
-            <h3>Representative Details</h3>
-            <form>
-                  <label>
-                    Name:
-                    <input
-                      type="text"
-                      value={selectedVendor.representative.name}
-                      disabled
-                    />
-                  </label>
-                  <label>
-                    Designation:
-                    <input
-                      type="text"
-                      value={selectedVendor.representative.designation}
-                      disabled
-                    />
-                  </label>
-                  <label>
-                    Email:
-                    <input
-                      type="text"
-                      value={selectedVendor.representative.email}
-                      disabled
-                    />
-                  </label>
-                  <label>
-                    Office Phone:
-                    <input
-                      type="text"
-                      value={selectedVendor.representative.officePhone}
-                      disabled
-                    />
-                  </label>
-                  <label>
-                    Personal Phone:
-                    <input
-                      type="text"
-                      value={selectedVendor.representative.personalPhone}
-                      disabled
-                    />
-                  </label>
-                  <label>
-                    Address:
-                    <input
-                      type="text"
-                      value={selectedVendor.representative.address}
-                      disabled
-                    />
-                  </label>
-                </form>
-          </div>
-        </div>
-      )}
+
+    
     </div>
   );
 };

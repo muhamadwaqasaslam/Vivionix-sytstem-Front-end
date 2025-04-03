@@ -71,6 +71,35 @@
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
+.vendor-cehckbox{
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background-color: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-left: 10px;
+}
+.Is-vendor{
+  margin-bottom: 20px;
+  
+}
+
+
+.phone-input {
+  width: 100% !important;
+}
+
+.phone-input > .react-tel-input {
+  width: 100% !important;
+}
+
+.react-tel-input .form-control {
+  width: 100% !important;
+  height: 40px;
+}
+
 /* Buttons */
 .vendor-btn {
   padding: 10px 15px;

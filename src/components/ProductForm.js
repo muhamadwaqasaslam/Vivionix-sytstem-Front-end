@@ -3,27 +3,51 @@ import './ProductForm.css';
 
 const ProductForm = () => {
   const initialProductState = {
-    name: '',
-    referenceNumber: '',
-    brandName: '',
-    packSize: '',
-    unitPerPack: '',
-    qualityCertifications: '',
-    productCategory: 'Equipment',
-    productId: '',
+    product_name: '',
+    reference_number: '',
+    packsize: '',
+    packprice: '',
+    price_date: '',
+    vendor_display_name: '',
+    is_available:'',
+    remarks:'',
+    registered_by: '',
+    Qualitycertifications: '',
+    product_category: '',
     brochure: null,
-    ifu: null,
+    ifu: null, 
     certificates: null,
   };
 
-  const [vendor, setVendor] = useState('');
-  const [vendorList] = useState(['Vendor A', 'Vendor B', 'Vendor C']);
-  const [products, setProducts] = useState([{ ...initialProductState, id: Date.now() }]);
-  const [isSaved, setIsSaved] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  
+// {
+//   "product_id": "dsp096702",
+//   "product_name": "sanitizer",
+//   "reference_number": "1122",
+//   "packsize": "12",
+//   "packprice": "234",
+//   "price_date": "2025-04-02",
+//   "vendor_display_name": "taimorrs",
+//   "is_available": true,
+//   "remarks": "erdsssss",
+//   "registered_by": "ds045776",
+//   "Qualitycertifications": "yes",
+//   "product_category": "Chemical",
+//   "brocure": null,
+//   "ifu": null,
+//   "certificates": null
+// }
 
-  const handleVendorChange = (e) => {
-    setVendor(e.target.value);
+
+  const [products, setProducts] = useState([{ ...initialProductState, id: Date.now() }]);
+
+  const handleVendorChange = (e, id) => {
+    const { value } = e.target;
+    setProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product.id === id ? { ...product, vendor_display_name: value } : product
+      )
+    );
   };
 
   const handleProductChange = (id, e) => {
@@ -36,64 +60,107 @@ const ProductForm = () => {
   };
 
   const addMoreProducts = () => {
-    setProducts([...products, { ...initialProductState, id: Date.now() }]);
+    setProducts((prevProducts) => {
+      if (prevProducts.length === 0) {
+        return [{ ...initialProductState, id: Date.now() }];
+      }
+  
+      return [
+        ...prevProducts,
+        {
+          ...initialProductState,
+          id: Date.now(),
+          vendor_display_name: prevProducts[0].vendor_display_name, // Keep the first product's vendor
+        },
+      ];
+    });
   };
 
   const removeProduct = (id) => {
     setProducts(products.filter((product) => product.id !== id));
   };
 
-  const handleSave = () => {
-    setIsSaved(true);
-    setIsSubmitted(false);
-    alert("Product details saved successfully!");
-  };
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isSaved) {
-      alert("Please save the form before submitting.");
-      return;
+    
+    // Create a FormData object
+    const formData = new FormData();
+  
+    // Loop through all the products and append each field to the FormData object
+    products.forEach((product) => {
+      formData.append('product_name', product.product_name);
+      formData.append('reference_number', product.reference_number);
+      formData.append('packsize', product.packsize);
+      formData.append('packprice', product.packprice);
+      formData.append('price_date', product.price_date);
+      formData.append('vendorname', product.vendor_display_name);
+      formData.append('is_available', product.is_available);
+      formData.append('remarks', product.remarks);
+      formData.append('registered_by', product.registered_by);
+      formData.append('Qualitycertifications', product.Qualitycertifications);
+      formData.append('product_category', product.product_category);
+      // Handle files
+      if (product.brochure) formData.append('brochure', product.brochure);
+      if (product.ifu) formData.append('ifu', product.ifu);
+      if (product.certificates) formData.append('certificates', product.certificates);
+    });
+  
+    try {
+      // Send the request using FormData. Do not set Content-Type manually as it is automatically set by the browser
+      const response = await fetch('https://my.vivionix.com/products/register/', {
+        method: 'POST',
+        body: formData,  // Automatically sets Content-Type to multipart/form-data
+      });
+  
+      if (response.ok) {
+        alert('Product registration submitted successfully!');
+        setProducts([{ ...initialProductState, id: Date.now() }]);
+      } else {
+        alert('Failed to submit product registration.');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('An error occurred while submitting.');
     }
-    setIsSubmitted(true);
-    setIsSaved(false);
-    alert("Product registration submitted successfully!");
   };
+  
 
   return (
     <div className="product-form-container">
       <h1 className="product-heading">Product Registration Form</h1>
       
-      <label>Vendor Name:</label>
-      <input 
-        type="text" 
-        value={vendor} 
-        onChange={handleVendorChange} 
-        list="vendor-list" 
-        placeholder="Search or enter vendor name" 
-        required 
-        className='vendor-search'
-      />
-      <datalist id="vendor-list">
-        {vendorList.map((v, index) => (
-          <option key={index} value={v} />
-        ))}
-      </datalist>
+      {products.map((product, index) => (
+      <div key={product.id}>
+        <label>Vendor Name:</label>
+        <input
+          type="text"
+          name="vendorname"
+          value={product.vendor_display_name}
+          onChange={(e) => handleVendorChange(e, product.id)}
+          placeholder="Enter vendor name"
+          required
+          className="vendor-search"
+        />
+      </div>
+    ))}
 
       <div className="product-table-container">
         <table className="product-table">
           <thead>
             <tr>
               <th>Sr. No.</th>
-              <th>Product Registration Date</th>
-              <th>Name</th>
+              <th>Product Name</th>
               <th>Ref No/ Cat No</th>
-              <th>Brand Name</th>
               <th>Pack Size</th>
-              <th>Unit/Tests Per Pack</th>
+              <th>Pack Price</th>
+              <th>Price Date</th>
+              <th>Is Available</th>
+              <th>remarks</th>
+              <th>Registered By</th>
               <th>Quality Certifications</th>
               <th>Product Category</th>
-              <th>Product ID</th>
               <th>Brochure</th>
               <th>IFU</th>
               <th>Certificates</th>
@@ -104,21 +171,22 @@ const ProductForm = () => {
             {products.map((product, index) => (
               <tr key={product.id}>
                 <td>{index + 1}</td>
-                <td>{new Date().toLocaleDateString()}</td>
-                <td><input type="text" name="name" value={product.name} onChange={(e) => handleProductChange(product.id, e)} required /></td>
-                <td><input type="text" name="referenceNumber" value={product.referenceNumber} onChange={(e) => handleProductChange(product.id, e)} required /></td>
-                <td><input type="text" name="brandName" value={product.brandName} onChange={(e) => handleProductChange(product.id, e)} required /></td>
-                <td><input type="text" name="packSize" value={product.packSize} onChange={(e) => handleProductChange(product.id, e)} required /></td>
-                <td><input type="text" name="unitPerPack" value={product.unitPerPack} onChange={(e) => handleProductChange(product.id, e)} required /></td>
-                <td><input type="text" name="qualityCertifications" value={product.qualityCertifications} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="text" name="product_name" value={product.product_name} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="text" name="reference_number" value={product.reference_number} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="number" name="packsize" value={product.packsize} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="number" name="packprice" value={product.packprice} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="date" name="price_date" value={product.price_date} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="checkbox" name="is_available" value={product.is_available} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="text" name="remarks" value={product.remarks} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="text" name="registered_by" value={product.registered_by} onChange={(e) => handleProductChange(product.id, e)} required /></td>
+                <td><input type="text" name="Qualitycertifications" value={product.Qualitycertifications} onChange={(e) => handleProductChange(product.id, e)} required /></td>
                 <td>
-                  <select name="productCategory" value={product.productCategory} onChange={(e) => handleProductChange(product.id, e)}>
+                  <select name="product_category" value={product.product_category} onChange={(e) => handleProductChange(product.id, e)}>
                     <option value="Equipment">Equipment</option>
                     <option value="Chemical">Chemical</option>
                     <option value="Consumable Device">Consumable Device</option>
                   </select>
                 </td>
-                <td><input type="text" name="productId" value={product.productId} onChange={(e) => handleProductChange(product.id, e)} /></td>
                 <td><input type="file" name="brochure" onChange={(e) => handleProductChange(product.id, e)} /></td>
                 <td><input type="file" name="ifu" onChange={(e) => handleProductChange(product.id, e)} /></td>
                 <td><input type="file" name="certificates" onChange={(e) => handleProductChange(product.id, e)} /></td>
@@ -135,10 +203,7 @@ const ProductForm = () => {
       </div>
 
       <div className="product-button-container">
-        <button type="button" className="product-btn save" onClick={handleSave} disabled={isSaved}>
-          Save
-        </button>
-        <button type="submit" className="product-btn submit" onClick={handleSubmit} disabled={!isSaved || isSubmitted}>
+        <button type="submit" className="product-btn submit" onClick={handleSubmit}>
           Submit
         </button>
       </div>

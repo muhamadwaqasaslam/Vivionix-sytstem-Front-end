@@ -83,7 +83,7 @@ table th input:focus{
 }
 
 /* Modal Background */
-.product-modal {
+.product-List-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -100,14 +100,13 @@ table th input:focus{
 }
 
 /* Modal Content */
-.product-modal-content {
+.product-List-modal-content {
   background-color: white;
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-  width: 800px;
-  max-width: 90%;
-  height: 720px;  /* Adjust height if necessary */
+  width: 50%;
+  height: 700px;  /* Adjust height if necessary */
   display: block;
   overflow-y: auto;
 }
@@ -181,6 +180,12 @@ table th input:focus{
   justify-content: flex-start;
   gap: 500px;
 }
+
+
+
+
+
+
 
 /* Responsive Table - Scroll on small screens */
 @media screen and (max-width: 768px) {

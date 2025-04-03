@@ -16,6 +16,7 @@
   text-align: center;
 }
 
+
 /* Table Styles */
 .vendor-table {
   width: 100%;
@@ -25,15 +26,21 @@
   overflow: hidden;
 }
 
+
+
+
 .vendor-table th, .vendor-table td {
   padding: 12px;
   border: 1px solid #ddd;
   text-align: left;
+ 
 }
 
 .vendor-table th {
   background: #007bff;
   color: white;
+
+
 }
 
 .vendor-table td a {
@@ -63,78 +70,110 @@
   color: black;
 }
 
-.vendor-row-button {
-  display: flex;
-  gap: 5px;
-}
 
-/* Modal Styles */
-.modal-update, .modal-products, .modal-representative {
+
+
+
+.vendor-update-modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);  /* Dimmed background */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1000; /* Ensure modal is above other content */
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
 }
 
-.modal-content-update, .modal-content-products, .modal-content-representative {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 40%;
-  max-width: 600px;
+/* Modal Content */
+.vendor-update-modal-content{
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  width: 50%;
+  height: 700px;  /* Adjust height if necessary */
+  display: block;
+  overflow-y: auto;
+}
+
+/* Modal Title */
+.vendor-update-modal-content h3 {
+  margin-top: 0;
+  font-size: 24px;
   text-align: center;
 }
 
-.modal-content-update h3, .modal-content-products h3, .modal-content-representative h3 {
+
+/* Form Styles */
+.form-group {
+  display: flex;
+  flex-direction: column; /* Stack label and input vertically */
   margin-bottom: 15px;
+
 }
 
-.close {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  font-size: 20px;
-  cursor: pointer;
+.form-group label {
+  margin-bottom: 5px;
+  font-size: 14px;
+  text-align: left; /* Align label to the left */
 }
 
-/* Forms */
-.vendor-form, .product-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.vendor-form label, .product-form label {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-}
-
-.vendor-form input, .product-form input, .product-form select {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.vendor-row-button{
-  border: none !important;
-}
-
-.btn-save {
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
   padding: 10px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
 }
+
+.form-group textarea {
+  height: 80px;
+}
+
+/* Buttons */
+.modal-button,
+.modal-close-button {
+  background-color: #007BFF;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  margin-right: 30px; /* Add space between buttons */
+}
+
+.modal-button:hover,
+.modal-close-button:hover {
+  background-color: #0056b3;
+}
+
+.modal-close-button {
+  background-color: #dc3545;
+}
+
+.modal-close-button:hover {
+  background-color: #c82333;
+}
+
+/* To ensure the buttons are aligned side by side with a gap */
+.modal-button-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 500px;
+}
+
+
+
 
 /* Responsive Design */
 @media screen and (max-width: 1024px) {
