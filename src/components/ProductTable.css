@@ -58,28 +58,41 @@ table th input:focus{
 
 
 
-.view-btn, .update-btn {
-  padding: 8px 12px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
 
-.view-btn {
-  background-color: #28a745;
-  color: white;
-  width: 70px;
-}
-
-.update-btn {
-  background-color: #ffc107;
+/* Update Icon */
+.update-icon {
   color: black;
-  width: 70px;
+  width: 20px;
+  height: 20px;
+  margin-left: 30px;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
+
+.update-icon:hover {
+  color: #0056b3; /* Darker blue */
+  transform: scale(1.1); /* Slight zoom effect */
+}
+
+/* Delete Icon */
+.delete-icon {
+  color: red;
+  width: 20px;
+  height: 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.delete-icon:hover {
+  color: #0056b3;
+  transform: scale(1.1);
+}
+
 
 .product-btn-row {
   display: flex;
-  gap: 5px;
+  align-items: center;
+  gap: 25px;
 }
 
 /* Modal Background */

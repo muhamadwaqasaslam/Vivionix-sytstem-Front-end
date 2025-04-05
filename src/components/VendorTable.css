@@ -43,6 +43,21 @@
 
 }
 
+.vendor-table th input{
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.vendor-table th input:focus{
+  border-color: #007BFF;
+  background-color: #f0f9ff;
+  outline: none;
+}
+
 .vendor-table td a {
   color: #007bff;
   text-decoration: none;
@@ -52,22 +67,18 @@
   text-decoration: underline;
 }
 
-/* Buttons */
-.btn-view, .btn-update {
-  padding: 8px 12px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.btn-view {
-  background-color: #28a745;
-  color: white;
-}
-
-.btn-update {
-  background-color: #ffc107;
+.vendor-update-icon {
   color: black;
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.vendor-update-icon:hover {
+  color: #0056b3; /* Darker blue */
+  transform: scale(1.1); /* Slight zoom effect */
 }
 
 
@@ -198,7 +209,7 @@
     white-space: nowrap;
   }
 
-  .modal-content-update, .modal-content-products, .modal-content-representative {
+  .vendor-update-modal-content{
     width: 85%;
   }
 
@@ -216,13 +227,15 @@
     font-size: 20px;
   }
 
-  .modal-content-update, .modal-content-products, .modal-content-representative {
-    width: 95%;
-    padding: 15px;
+  .vendor-update-modal-content {
+    width: 80%;
+    padding: 25px;
   }
 
   .vendor-table th, .vendor-table td {
     font-size: 12px;
     padding: 8px;
   }
+
+
 }

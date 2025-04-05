@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Pencil } from "lucide-react";
 import "./VendorTable.css";
 
 const VendorTable = () => {
@@ -19,12 +20,14 @@ const VendorTable = () => {
         (value) =>
           typeof value === "string" && value.toLowerCase().includes(search)
       ) ||
-      Object.values(vendor.representative).some(
-        (value) =>
-          typeof value === "string" && value.toLowerCase().includes(search)
-      )
+      (vendor.representative &&
+        Object.values(vendor.representative).some(
+          (value) =>
+            typeof value === "string" && value.toLowerCase().includes(search)
+        ))
     );
   });
+  
 
   useEffect(() => {
     fetch("https://my.vivionix.com/vendors/list_all/")
@@ -159,12 +162,11 @@ const VendorTable = () => {
               <td>{vendor.registered_by ?? "null"}</td>
               <td>{vendor.productcatalog ?? "null"}</td>
               <td className="vendor-row-button">
-                <button
-                  className="btn-update"
-                  onClick={() => openModal(vendor, "update")}
-                >
-                  Update Vendor
-                </button>
+              <Pencil
+                    className="vendor-update-icon"
+                    onClick={() => openModal(vendor, "update")}
+                  
+                  />
               </td>
             </tr>
           ))}

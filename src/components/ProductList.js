@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Pencil, Trash } from "lucide-react";
 import "./ProductTable.css";
 
 const ProductTable = () => {
@@ -34,8 +35,21 @@ const ProductTable = () => {
   };
 
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, type } = e.target;
+  
+    if (type === "file") {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: e.target.files[0], 
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: e.target.value,
+      }));
+    }
   };
+  
 
   const handleUpdate = (product) => {
     fetchProductById(product.product_id);
@@ -74,7 +88,7 @@ const ProductTable = () => {
   const handlePrint = () => {
     const printContent = document.getElementById("printable-section").innerHTML;
     const newWindow = window.open("", "_blank");
-  
+
     newWindow.document.write(`
       <html>
         <head>
@@ -98,17 +112,34 @@ const ProductTable = () => {
         </body>
       </html>
     `);
-  
+
     newWindow.document.close();
     newWindow.print();
   };
-  
-  
 
   const handleView = (product) => {
     setSelectedProduct(product);
     setShowViewModal(true);
   };
+
+  const handleDelete = (productId) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      fetch(`https://my.vivionix.com/products/delete/${productId}/`, {
+        method: "DELETE",
+      })
+        .then((response) => {
+          if (response.ok) {
+            setProducts((prevProducts) =>
+              prevProducts.filter((product) => product.product_id !== productId)
+            );
+          } else {
+            console.error("Error deleting product");
+          }
+        })
+        .catch((error) => console.error("Error deleting product:", error));
+    }
+  };
+
 
   return (
     <div id="printable-section" className="product-container">
@@ -128,6 +159,9 @@ const ProductTable = () => {
               <th>Availability</th>
               <th>Certifications</th>
               <th>Category</th>
+              <th>brocure</th>
+              <th>IFU</th>
+              <th>Certificates</th>
               <th>Action</th>
             </tr>
             <tr>
@@ -143,6 +177,9 @@ const ProductTable = () => {
                 "is_available",
                 "Qualitycertifications",
                 "product_category",
+                "brocure",
+                "ifu",
+                "certificates",
               ].map((key) => (
                 <th key={key}>
                   <input
@@ -169,19 +206,20 @@ const ProductTable = () => {
                 <td>{product.is_available ? "Yes" : "No"}</td>
                 <td>{product.Qualitycertifications}</td>
                 <td>{product.product_category}</td>
+                <td>{product.brocure}</td>
+                <td>{product.ifu}</td>
+                <td>{product.certificates}</td>
                 <td className="product-btn-row">
-                  <button
-                    className="update-btn"
+                  <Pencil
+                    className="update-icon"
                     onClick={() => handleUpdate(product)}
-                  >
-                    Update
-                  </button>
-                  <button
-                    className="view-btn"
-                    onClick={() => handleView(product)}
-                  >
-                    View
-                  </button>
+                  
+                  />
+                  <Trash
+                    className="delete-icon"
+                    onClick={() => handleDelete(product.product_id)}
+                    
+                  />
                 </td>
               </tr>
             ))}
@@ -271,8 +309,34 @@ const ProductTable = () => {
                   <option value="Consumable Device">Consumable Device</option>
                 </select>
               </div>
+              <div className="form-group">
+                <label>Brocure</label>
+                <input
+                  name="brocure"
+                  
+                  onChange={handleInputChange}
+                  type="file"
+                />
+              </div>
+              <div className="form-group">
+                <label>IFU</label>
+                <input
+                  name="ifu"
+                 
+                  onChange={handleInputChange}
+                  type="file"
+                />
+              </div>
+              <div className="form-group">
+                <label>Certificates</label>
+                <input
+                  name="certificates"
+               
+                  onChange={handleInputChange}
+                  type="file"
+                />
+              </div>
               <div className="modal-button-container">
-                
                 <button
                   className="modal-close-button"
                   onClick={() => setShowUpdateModal(false)}
@@ -286,83 +350,6 @@ const ProductTable = () => {
         </div>
       )}
 
-      {showViewModal && selectedProduct && (
-        <div className="product-modal">
-          <div className="product-modal-content">
-            <h3>Vendor Information</h3>
-            <form>
-              <div className="form-group">
-                <label>Vendor ID</label>
-                <input type="text" value={selectedProduct.vendor.id} disabled />
-              </div>
-              <div className="form-group">
-                <label>Date of Registration</label>
-                <input
-                  type="text"
-                  value={selectedProduct.vendor.dateRegistered}
-                  disabled
-                />
-              </div>
-              <div className="form-group">
-                <label>Name</label>
-                <input
-                  type="text"
-                  value={selectedProduct.vendor.name}
-                  disabled
-                />
-              </div>
-              <div className="form-group">
-                <label>Address</label>
-                <input
-                  type="text"
-                  value={selectedProduct.vendor.address}
-                  disabled
-                />
-              </div>
-              <div className="form-group">
-                <label>Website</label>
-                <input
-                  type="text"
-                  value={selectedProduct.vendor.website}
-                  disabled
-                />
-              </div>
-              <div className="form-group">
-                <label>Type</label>
-                <input
-                  type="text"
-                  value={selectedProduct.vendor.type}
-                  disabled
-                />
-              </div>
-              <div className="form-group">
-                <label>Contact Email</label>
-                <input
-                  type="email"
-                  value={selectedProduct.vendor.email}
-                  disabled
-                />
-              </div>
-              <div className="form-group">
-                <label>Contact Number</label>
-                <input
-                  type="text"
-                  value={selectedProduct.vendor.contactNumber}
-                  disabled
-                />
-              </div>
-              <div className="modal-button-container">
-                <button
-                  className="modal-close-button"
-                  onClick={() => setShowViewModal(false)}
-                >
-                  Close
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
       <div className="footer">
         <p>Total Products: {products.length}</p>

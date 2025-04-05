@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ProductForm.css';  
 
 const ProductForm = () => {
@@ -8,47 +8,42 @@ const ProductForm = () => {
     packsize: '',
     packprice: '',
     price_date: '',
-    vendor_display_name: '',
-    is_available:'',
-    remarks:'',
+    is_available: '',
+    remarks: '',
     registered_by: '',
     Qualitycertifications: '',
     product_category: '',
-    brochure: null,
+    brocure: null,
     ifu: null, 
     certificates: null,
   };
 
   
-// {
-//   "product_id": "dsp096702",
-//   "product_name": "sanitizer",
-//   "reference_number": "1122",
-//   "packsize": "12",
-//   "packprice": "234",
-//   "price_date": "2025-04-02",
-//   "vendor_display_name": "taimorrs",
-//   "is_available": true,
-//   "remarks": "erdsssss",
-//   "registered_by": "ds045776",
-//   "Qualitycertifications": "yes",
-//   "product_category": "Chemical",
-//   "brocure": null,
-//   "ifu": null,
-//   "certificates": null
-// }
-
-
   const [products, setProducts] = useState([{ ...initialProductState, id: Date.now() }]);
+  const [vendor, setVendor] = useState('');
+  const [vendors, setVendors] = useState([]);
 
-  const handleVendorChange = (e, id) => {
-    const { value } = e.target;
-    setProducts((prevProducts) =>
-      prevProducts.map((product) =>
-        product.id === id ? { ...product, vendor_display_name: value } : product
-      )
-    );
+  useEffect(() => {
+    const fetchVendors = async () => {
+      try {
+        const response = await fetch('https://my.vivionix.com/vendors/list/'); 
+        if (response.ok) {
+          const data = await response.json();
+          setVendors(data); // Assuming the API returns an array of vendors
+        } else {
+          console.error("Failed to fetch vendors.");
+        }
+      } catch (error) {
+        console.error("Error fetching vendors:", error);
+      }
+    };
+    fetchVendors();
+  }, []);
+
+  const handleVendorChange = (e) => {
+    setVendor(e.target.value);
   };
+
 
   const handleProductChange = (id, e) => {
     const { name, value, files } = e.target;
@@ -60,20 +55,10 @@ const ProductForm = () => {
   };
 
   const addMoreProducts = () => {
-    setProducts((prevProducts) => {
-      if (prevProducts.length === 0) {
-        return [{ ...initialProductState, id: Date.now() }];
-      }
-  
-      return [
-        ...prevProducts,
-        {
-          ...initialProductState,
-          id: Date.now(),
-          vendor_display_name: prevProducts[0].vendor_display_name, // Keep the first product's vendor
-        },
-      ];
-    });
+    setProducts((prevProducts) => [
+      ...prevProducts,
+      { ...initialProductState, id: Date.now() }
+    ]);
   };
 
   const removeProduct = (id) => {
@@ -85,38 +70,35 @@ const ProductForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Create a FormData object
     const formData = new FormData();
   
-    // Loop through all the products and append each field to the FormData object
     products.forEach((product) => {
       formData.append('product_name', product.product_name);
       formData.append('reference_number', product.reference_number);
       formData.append('packsize', product.packsize);
       formData.append('packprice', product.packprice);
       formData.append('price_date', product.price_date);
-      formData.append('vendorname', product.vendor_display_name);
+      formData.append('vendorname', vendor);
       formData.append('is_available', product.is_available);
       formData.append('remarks', product.remarks);
       formData.append('registered_by', product.registered_by);
       formData.append('Qualitycertifications', product.Qualitycertifications);
       formData.append('product_category', product.product_category);
-      // Handle files
-      if (product.brochure) formData.append('brochure', product.brochure);
+      if (product.brocure) formData.append('brocure', product.brocure);
       if (product.ifu) formData.append('ifu', product.ifu);
       if (product.certificates) formData.append('certificates', product.certificates);
     });
   
     try {
-      // Send the request using FormData. Do not set Content-Type manually as it is automatically set by the browser
       const response = await fetch('https://my.vivionix.com/products/register/', {
         method: 'POST',
-        body: formData,  // Automatically sets Content-Type to multipart/form-data
+        body: formData,
       });
   
       if (response.ok) {
         alert('Product registration submitted successfully!');
-        setProducts([{ ...initialProductState, id: Date.now() }]);
+        setVendor(''); // Reset vendor
+        setProducts([{ ...initialProductState, id: Date.now() }]); // Reset products
       } else {
         alert('Failed to submit product registration.');
       }
@@ -125,26 +107,25 @@ const ProductForm = () => {
       alert('An error occurred while submitting.');
     }
   };
+
   
 
   return (
     <div className="product-form-container">
       <h1 className="product-heading">Product Registration Form</h1>
       
-      {products.map((product, index) => (
-      <div key={product.id}>
+      <div>
         <label>Vendor Name:</label>
         <input
           type="text"
           name="vendorname"
-          value={product.vendor_display_name}
-          onChange={(e) => handleVendorChange(e, product.id)}
+          value={vendor}
+          onChange={handleVendorChange}
           placeholder="Enter vendor name"
           required
           className="vendor-search"
         />
       </div>
-    ))}
 
       <div className="product-table-container">
         <table className="product-table">
@@ -161,7 +142,7 @@ const ProductForm = () => {
               <th>Registered By</th>
               <th>Quality Certifications</th>
               <th>Product Category</th>
-              <th>Brochure</th>
+              <th>Brocure</th>
               <th>IFU</th>
               <th>Certificates</th>
               <th>Actions</th>
@@ -187,7 +168,7 @@ const ProductForm = () => {
                     <option value="Consumable Device">Consumable Device</option>
                   </select>
                 </td>
-                <td><input type="file" name="brochure" onChange={(e) => handleProductChange(product.id, e)} /></td>
+                <td><input type="file" name="brocure" onChange={(e) => handleProductChange(product.id, e)} /></td>
                 <td><input type="file" name="ifu" onChange={(e) => handleProductChange(product.id, e)} /></td>
                 <td><input type="file" name="certificates" onChange={(e) => handleProductChange(product.id, e)} /></td>
                 <td>
