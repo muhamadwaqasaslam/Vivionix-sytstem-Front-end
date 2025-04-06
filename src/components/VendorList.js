@@ -27,7 +27,6 @@ const VendorTable = () => {
         ))
     );
   });
-  
 
   useEffect(() => {
     fetch("https://my.vivionix.com/vendors/list_all/")
@@ -36,61 +35,80 @@ const VendorTable = () => {
       .catch((error) => console.error("Error fetching vendors:", error));
   }, []);
 
+
   const handleSubmitUpdate = async (e) => {
     e.preventDefault();
+  
     try {
-      const response = await fetch(`https://my.vivionix.com/vendors/update/${selectedVendor.vendor_id}/`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update vendor");
+      const formDataToSend = new FormData();
+  
+      for (const key in formData) {
+        const value = formData[key];
+        if (
+          value !== null &&
+          value !== undefined &&
+          value !== "" &&
+          (typeof value !== "string" || !value.startsWith("http"))
+        ) {
+          formDataToSend.append(key, value);
+        }
       }
-
-      setVendors((prev) =>
-        prev.map((vendor) =>
-          vendor.vendor_id === selectedVendor.vendor_id
-            ? { ...vendor, ...formData }
-            : vendor
+  
+      const response = await fetch(
+        `https://my.vivionix.com/vendors/update/${selectedVendor.vendor_id}/`,
+        {
+          method: "PUT",
+          body: formDataToSend,
+        }
+      );
+  
+      const updatedVendor = await response.json();
+  
+      setVendors((prevVendors) =>
+        prevVendors.map((vendor) =>
+          vendor.vendor_id === updatedVendor.vendor_id ? updatedVendor : vendor
         )
       );
+  
+      setShowUpdateModal(false);
       closeModal();
     } catch (error) {
       console.error("Error updating vendor:", error);
     }
   };
-
+  
 
   const openModal = (vendor, type) => {
     setSelectedVendor({ ...vendor });
     setModalType(type);
-    
+
     if (type === "update") {
-      setShowUpdateModal(true); 
-      setFormData({ ...vendor }); 
+      setShowUpdateModal(true);
+      setFormData({ ...vendor });
     }
   };
-  
 
   const closeModal = () => {
     setSelectedVendor(null);
     setModalType(null);
-    setShowUpdateModal(false); 
+    setShowUpdateModal(false);
   };
-  
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, type } = e.target;
+
+    if (type === "file") {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: e.target.files[0],
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: e.target.value,
+      }));
+    }
   };
-
-
-
-
   return (
     <div className="vendor-container">
       <h2 className="vendor-title">Registered Vendor List</h2>
@@ -162,11 +180,10 @@ const VendorTable = () => {
               <td>{vendor.registered_by ?? "null"}</td>
               <td>{vendor.productcatalog ?? "null"}</td>
               <td className="vendor-row-button">
-              <Pencil
-                    className="vendor-update-icon"
-                    onClick={() => openModal(vendor, "update")}
-                  
-                  />
+                <Pencil
+                  className="vendor-update-icon"
+                  onClick={() => openModal(vendor, "update")}
+                />
               </td>
             </tr>
           ))}
@@ -174,116 +191,113 @@ const VendorTable = () => {
       </table>
 
       {showUpdateModal && selectedVendor && (
-  <div className="vendor-update-modal">
-    <div className="vendor-update-modal-content">
-      <h3>Update Vendor</h3>
-      <form onSubmit={handleSubmitUpdate}>
-        <div className="form-group">
-          <label>Vendor Name</label>
-          <input
-            name="vendorname"
-            value={formData.vendorname || ""}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Company Email</label>
-          <input
-            type="email"
-            name="company_email"
-            value={formData.company_email || ""}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Company Phone</label>
-          <input
-            name="company_phone_number"
-            value={formData.company_phone_number || ""}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Address</label>
-          <input
-            name="address"
-            value={formData.address || ""}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Website</label>
-          <input
-            name="website"
-            value={formData.website || ""}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Type</label>
-          <select
-            name="type"
-            value={formData.type || ""}
-            onChange={handleInputChange}
-          >
-            <option value="Manufacturer">Manufacturer</option>
-            <option value="Distributor">Distributor</option>
-            <option value="Supplier">Supplier</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label>Contract Start Date</label>
-          <input
-            type="date"
-            name="contract_start_date"
-            value={formData.contract_start_date || ""}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Registered By</label>
-          <input
-            name="registered_by"
-            value={formData.registered_by || ""}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Is Vendor</label>
-          <select
-            name="is_vendor"
-            value={formData.is_vendor || ""}
-            onChange={handleInputChange}
-          >
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label>Product Catalog</label>
-          <input
-            name="productcatalog"
-            value={formData.productcatalog || "null"}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="modal-button-container">
-          <button
-            className="modal-close-button"
-            onClick={() => setShowUpdateModal(false)}
-          >
-            Close
-          </button>
-          <button className="modal-button" >Save</button>
-        </div>
-      </form>
-    </div>
-  </div>
-)}
+        <div className="vendor-update-modal">
+          <div className="vendor-update-modal-content">
+            <h3>Update Vendor</h3>
+            <form onSubmit={handleSubmitUpdate}>
+              <div className="form-group">
+                <label>Vendor Name</label>
+                <input
+                  name="vendorname"
+                  value={formData.vendorname || ""}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Company Email</label>
+                <input
+                  type="email"
+                  name="company_email"
+                  value={formData.company_email || ""}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Company Phone</label>
+                <input
+                  name="company_phone_number"
+                  value={formData.company_phone_number || ""}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Address</label>
+                <input
+                  name="address"
+                  value={formData.address || ""}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Website</label>
+                <input
+                  name="website"
+                  value={formData.website || ""}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Type</label>
+                <select
+                  name="type"
+                  value={formData.type || ""}
+                  onChange={handleInputChange}
+                >
+                  <option value="Manufacturer">Manufacturer</option>
+                  <option value="Distributor">Distributor</option>
+                  <option value="Supplier">Supplier</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Contract Start Date</label>
+                <input
+                  type="date"
+                  name="contract_start_date"
+                  value={formData.contract_start_date || ""}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Registered By</label>
+                <input
+                  name="registered_by"
+                  value={formData.registered_by || ""}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Is Vendor</label>
+                <select
+                  name="is_vendor"
+                  value={formData.is_vendor || ""}
+                  onChange={handleInputChange}
+                >
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Product Catalog</label>
+                <input
+                  name="productcatalog"
+                  onChange={handleInputChange}
+                  type="file"
+                />
+              </div>
 
-
-
-    
+              <div className="modal-button-container">
+                <button
+                  className="modal-close-button"
+                  onClick={() => setShowUpdateModal(false)}
+                >
+                  Close
+                </button>
+                <button className="modal-button">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

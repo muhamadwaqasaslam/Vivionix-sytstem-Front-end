@@ -36,11 +36,11 @@ const ProductTable = () => {
 
   const handleInputChange = (e) => {
     const { name, type } = e.target;
-  
+
     if (type === "file") {
       setFormData((prevData) => ({
         ...prevData,
-        [name]: e.target.files[0], 
+        [name]: e.target.files[0],
       }));
     } else {
       setFormData((prevData) => ({
@@ -49,7 +49,6 @@ const ProductTable = () => {
       }));
     }
   };
-  
 
   const handleUpdate = (product) => {
     fetchProductById(product.product_id);
@@ -57,28 +56,45 @@ const ProductTable = () => {
 
   const handleSubmitUpdate = (e) => {
     e.preventDefault();
-    fetch(
-      `https://my.vivionix.com/products/update/${selectedProduct.product_id}/`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+  
+    const formDataToSend = new FormData();
+  
+    for (const key in formData) {
+      console.log(`Key: ${key}, Value:`, formData[key], "Type:", typeof formData[key]);
+      if (
+        formData[key] !== null &&
+        formData[key] !== undefined &&
+        formData[key] !== "" &&
+        (typeof formData[key] !== "string" || !formData[key].startsWith("http")) // Exclude existing URLs
+      ) {
+        formDataToSend.append(key, formData[key]);
       }
-    )
+       else if (
+        formData[key] !== null &&
+        formData[key] !== undefined &&
+        formData[key] !== "" &&
+        !formData[key].startsWith("http") // Exclude existing URLs
+      ) {
+        formDataToSend.append(key, formData[key]);
+      }
+    }
+  
+    fetch(`https://my.vivionix.com/products/update/${selectedProduct.product_id}/`, {
+      method: "PUT",
+      body: formDataToSend,
+    })
       .then((response) => response.json())
       .then((updatedProduct) => {
         setProducts((prevProducts) =>
           prevProducts.map((product) =>
-            product.product_id === updatedProduct.product_id
-              ? updatedProduct
-              : product
+            product.product_id === updatedProduct.product_id ? updatedProduct : product
           )
         );
         setShowUpdateModal(false);
       })
       .catch((error) => console.error("Error updating product:", error));
   };
-
+  
   const filteredProducts = products.filter((product) =>
     Object.entries(searchTerms).every(([key, value]) =>
       product[key]?.toString().toLowerCase().includes(value)
@@ -139,7 +155,6 @@ const ProductTable = () => {
         .catch((error) => console.error("Error deleting product:", error));
     }
   };
-
 
   return (
     <div id="printable-section" className="product-container">
@@ -213,12 +228,10 @@ const ProductTable = () => {
                   <Pencil
                     className="update-icon"
                     onClick={() => handleUpdate(product)}
-                  
                   />
                   <Trash
                     className="delete-icon"
                     onClick={() => handleDelete(product.product_id)}
-                    
                   />
                 </td>
               </tr>
@@ -282,13 +295,24 @@ const ProductTable = () => {
                 />
               </div>
               <div className="form-group">
-                <label>Availability</label>
-                <input
-                  name="is_available"
-                  value={formData.is_available || ""}
-                  onChange={handleInputChange}
-                />
+                <label>
+                  <input
+                    type="checkbox"
+                    name="is_available"
+                    checked={formData.is_available || false}
+                    onChange={(e) =>
+                      handleInputChange({
+                        target: {
+                          name: "is_available",
+                          value: e.target.checked,
+                        },
+                      })
+                    }
+                  />
+                  Availability
+                </label>
               </div>
+
               <div className="form-group">
                 <label>Quality Certifications</label>
                 <input
@@ -313,25 +337,18 @@ const ProductTable = () => {
                 <label>Brocure</label>
                 <input
                   name="brocure"
-                  
                   onChange={handleInputChange}
                   type="file"
                 />
               </div>
               <div className="form-group">
                 <label>IFU</label>
-                <input
-                  name="ifu"
-                 
-                  onChange={handleInputChange}
-                  type="file"
-                />
+                <input name="ifu" onChange={handleInputChange} type="file" />
               </div>
               <div className="form-group">
                 <label>Certificates</label>
                 <input
                   name="certificates"
-               
                   onChange={handleInputChange}
                   type="file"
                 />
@@ -349,7 +366,6 @@ const ProductTable = () => {
           </div>
         </div>
       )}
-
 
       <div className="footer">
         <p>Total Products: {products.length}</p>
